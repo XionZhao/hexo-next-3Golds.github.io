@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.jpg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="go," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Go介绍 Go是一种开源编程语言，可以轻松构建简单，可靠和高效的软件。 Go是Google开发的一种静态强类型、编译型、并发型，并具有垃圾回收功能的编程语言。为了方便搜索和识别，有时会将其称为Golang。 罗伯特·格瑞史莫，罗勃·派克（Rob Pike）及肯·汤普逊于2007年9月开始设计Go语言，稍后Ian Lance Taylor、Russ Cox加入项目。Go语言是基于Inferno操作系">
+<meta name="keywords" content="go">
+<meta property="og:type" content="article">
+<meta property="og:title" content="初识Go">
+<meta property="og:url" content="http://zhaodaxin.com/2017/12/05/2017-12-05-初识Golang/index.html">
+<meta property="og:site_name" content="3Golds">
+<meta property="og:description" content="Go介绍 Go是一种开源编程语言，可以轻松构建简单，可靠和高效的软件。 Go是Google开发的一种静态强类型、编译型、并发型，并具有垃圾回收功能的编程语言。为了方便搜索和识别，有时会将其称为Golang。 罗伯特·格瑞史莫，罗勃·派克（Rob Pike）及肯·汤普逊于2007年9月开始设计Go语言，稍后Ian Lance Taylor、Russ Cox加入项目。Go语言是基于Inferno操作系">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://obbogqhb1.bkt.clouddn.com/go-icon.png">
+<meta property="og:image" content="http://obbogqhb1.bkt.clouddn.com/go-1.png">
+<meta property="og:image" content="http://obbogqhb1.bkt.clouddn.com/go-2.png">
+<meta property="og:updated_time" content="2018-03-16T08:50:33.814Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="初识Go">
+<meta name="twitter:description" content="Go介绍 Go是一种开源编程语言，可以轻松构建简单，可靠和高效的软件。 Go是Google开发的一种静态强类型、编译型、并发型，并具有垃圾回收功能的编程语言。为了方便搜索和识别，有时会将其称为Golang。 罗伯特·格瑞史莫，罗勃·派克（Rob Pike）及肯·汤普逊于2007年9月开始设计Go语言，稍后Ian Lance Taylor、Russ Cox加入项目。Go语言是基于Inferno操作系">
+<meta name="twitter:image" content="http://obbogqhb1.bkt.clouddn.com/go-icon.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhaodaxin.com/2017/12/05/2017-12-05-初识Golang/"/>
+
+
+
+
+
+  <title>初识Go | 3Golds</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">3Golds</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ThreeGold</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhaodaxin.com/2017/12/05/2017-12-05-初识Golang/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="3Golds">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/gophers.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="3Golds">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">初识Go</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-05T00:00:00+08:00">
+                2017-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/05/2017-12-05-初识Golang/" class="leancloud_visitors" data-flag-title="初识Go">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,235
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Go介绍"><a href="#Go介绍" class="headerlink" title="Go介绍"></a>Go介绍</h3><p><img src="http://obbogqhb1.bkt.clouddn.com/go-icon.png" alt="go-icon"></p>
+<p>Go是一种开源编程语言，可以轻松构建简单，可靠和高效的软件。</p>
+<p>Go是Google开发的一种静态强类型、编译型、并发型，并具有垃圾回收功能的编程语言。为了方便搜索和识别，有时会将其称为Golang。</p>
+<p>罗伯特·格瑞史莫，罗勃·派克（Rob Pike）及肯·汤普逊于2007年9月开始设计Go语言，稍后Ian Lance Taylor、Russ Cox加入项目。Go语言是基于Inferno操作系统所开发的。Go语言于2009年11月正式宣布推出，成为开放源代码项目，并在Linux及Mac OS X平台上进行了实现，后来追加了Windows系统下的实现。</p>
+<h4 id="受欢迎程度"><a href="#受欢迎程度" class="headerlink" title="受欢迎程度"></a>受欢迎程度</h4><p>截止目前为止，越来越多的开发者开始使用GO，并喜欢用Go，目前在Github统计中，Go排名第9</p>
+<p><img src="http://obbogqhb1.bkt.clouddn.com/go-1.png" alt="go-1"></p>
+<h4 id="最受欢迎的5种语言和最想使用的语言之一"><a href="#最受欢迎的5种语言和最想使用的语言之一" class="headerlink" title="最受欢迎的5种语言和最想使用的语言之一"></a>最受欢迎的5种语言和最想使用的语言之一</h4><p><img src="http://obbogqhb1.bkt.clouddn.com/go-2.png" alt="go-2"></p>
+<p>来源: <a href="https://insights.stackoverflow.com/survey/2017#most-loved-dreaded-and-wanted" target="_blank" rel="noopener">https://insights.stackoverflow.com/survey/2017#most-loved-dreaded-and-wanted</a></p>
+<h4 id="Go-是云基础架构语言"><a href="#Go-是云基础架构语言" class="headerlink" title="Go 是云基础架构语言"></a>Go 是云基础架构语言</h4><p>每个云计算公司都在用Go实现云基础架构关键组件，包括Google Cloud, AWS, Microsoft Azure, DigitalOcean, Heroku。Go是阿里巴巴，cloudflare和Drobox等云计算公司的重要组成部分</p>
+<h4 id="Go开源软件的影响力"><a href="#Go开源软件的影响力" class="headerlink" title="Go开源软件的影响力"></a>Go开源软件的影响力</h4><p>Go 有很多出色的开源软件，并且很流行，举几个常见并且正在用的例子</p>
+<ul>
+<li><p>kubernetes：容器编排系统，是一个自动化部署，扩展和管理容器的系统，最初由Google涉及并用于GRE</p>
+</li>
+<li><p>Moby(Docker)：容器</p>
+</li>
+<li><p>Prometheus：是一个开源的监控解决方案和时间序列数据库，支持metric和Alert</p>
+</li>
+<li><p>Granfana：仪表盘和图形</p>
+</li>
+</ul>
+<p>说了这么多，下面我们开始正式了解Go的语法及格式等。</p>
+<h3 id="Hello-世界"><a href="#Hello-世界" class="headerlink" title="Hello 世界"></a>Hello 世界</h3><p>因为Go是二进制方式，所以安装比较简单，这里不做过多介绍，可以参照官方文档：<a href="https://golang.org/doc/install" target="_blank" rel="noopener">https://golang.org/doc/install</a></p>
+<p>每个语言都以Hello World开始，Go也不例外，我们先写一个Hello World</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim hello.<span class="keyword">go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span>(</span><br><span class="line"></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line">	fmt.Println(<span class="string">"Hello 世界"</span>)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ <span class="keyword">go</span> run hello.<span class="keyword">go</span></span><br><span class="line"></span><br><span class="line">Hello 世界</span><br></pre></td></tr></table></figure>
+<h3 id="Go的目录组织结构-Workspaces"><a href="#Go的目录组织结构-Workspaces" class="headerlink" title="Go的目录组织结构(Workspaces)"></a>Go的目录组织结构(Workspaces)</h3><ul>
+<li><p>src: 包含Go源文件，src下有不同目录，每个目录可以理解为一个项目，在</p>
+</li>
+<li><p>pkg: 包含package object</p>
+</li>
+<li><p>bin: 包含可执行命令文件</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">bin/</span><br><span class="line"></span><br><span class="line">    hello                          # 可执行命令</span><br><span class="line"></span><br><span class="line">    outyet                         # 可执行命令</span><br><span class="line"></span><br><span class="line">pkg/</span><br><span class="line"></span><br><span class="line">    linux_amd64/</span><br><span class="line"></span><br><span class="line">        github.com/golang/example/</span><br><span class="line"></span><br><span class="line">            stringutil.a           # package object</span><br><span class="line"></span><br><span class="line">src/</span><br><span class="line"></span><br><span class="line">    github.com/golang/example/</span><br><span class="line"></span><br><span class="line">        .git/                      # Git repository metadata</span><br><span class="line"></span><br><span class="line">	hello/</span><br><span class="line"></span><br><span class="line">	    hello.go               # 源码</span><br><span class="line"></span><br><span class="line">	outyet/</span><br><span class="line"></span><br><span class="line">	    main.go                # 源码</span><br><span class="line"></span><br><span class="line">	    main_test.go           # 测试源码</span><br><span class="line"></span><br><span class="line">	stringutil/</span><br><span class="line"></span><br><span class="line">	    reverse.go             # 源码</span><br><span class="line"></span><br><span class="line">	    reverse_test.go        # 测试源码</span><br><span class="line"></span><br><span class="line">    golang.org/x/image/</span><br><span class="line"></span><br><span class="line">        .git/                      # Git repository metadata</span><br><span class="line"></span><br><span class="line">	bmp/</span><br><span class="line"></span><br><span class="line">	    reader.go              # package source</span><br><span class="line"></span><br><span class="line">	    writer.go              # package source</span><br><span class="line"></span><br><span class="line">    ... (many more repositories and packages omitted) ...</span><br></pre></td></tr></table></figure>
+<h3 id="Go基本命令介绍"><a href="#Go基本命令介绍" class="headerlink" title="Go基本命令介绍"></a>Go基本命令介绍</h3><ul>
+<li><p>go run: 编译和执行go程序</p>
+</li>
+<li><p>go build: 编译程序，生成二进制可执行文件</p>
+</li>
+<li><p>go install: 编译和安装可执行程序到bin目录</p>
+</li>
+<li><p>go test：执行单元测试或压力测试</p>
+</li>
+<li><p>go env： 显示go相关的环境变量</p>
+</li>
+<li><p>go fmt：格式化源代码</p>
+</li>
+</ul>
+<h3 id="package-包"><a href="#package-包" class="headerlink" title="package(包)"></a>package(包)</h3><p>每个Go程序都是由包组成的。程序运行的入口是包<code>main</code>。这个程序导入了包<code>fmt</code>和<code>math/rand</code>。</p>
+<p>按照惯例，包名与导入路径的最后一个目录一致。例如，<code>math/rand</code> 包由<code>package rand</code>语句开始</p>
+<ul>
+<li>math.rand: 包rand执行伪随机生成一个数字，为了安全考虑，建议使用crypto/rand</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line"></span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	&quot;math/rand&quot;</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">	fmt.Println(&quot;My favorite number is&quot;, rand.Intn(50))</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h3><p>使用圆括号组合导入，也可以写多个导入语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">import &quot;math&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import (</span><br><span class="line"></span><br><span class="line">    &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">    &quot;math&quot;</span><br><span class="line"></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><h4 id="定义及初始化变量"><a href="#定义及初始化变量" class="headerlink" title="定义及初始化变量"></a>定义及初始化变量</h4><p><code>var</code>语句定义了一个变量的列表；类型在后面，定义类型可以再函数外面，初始化值必须在函数内部</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim var.go</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var c, python, java bool  /./定义类型</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">	c, python, java = true, false, true  //初始化值</span><br><span class="line"></span><br><span class="line">	var i int #不初始化默认为0</span><br><span class="line"></span><br><span class="line">	fmt.Println(c, python, java, i)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ go run var.go</span><br><span class="line"></span><br><span class="line">true false true 0</span><br></pre></td></tr></table></figure>
+<h4 id="短变量声明"><a href="#短变量声明" class="headerlink" title="短变量声明"></a>短变量声明</h4><p>在函数中，<code>:=</code> 简洁赋值语句在明确类型的地方，可以用于替代<code>var</code>定义。</p>
+<p>函数外的每个语句都必须一关键字开始(<code>var</code>、<code>func</code>、等等)，<code>:=</code> 结构不能再函数外使用。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim short-variable.go</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">	var x string = &quot;你好&quot;</span><br><span class="line"></span><br><span class="line">	y := 3</span><br><span class="line"></span><br><span class="line">    c, python, java := true, false, true</span><br><span class="line"></span><br><span class="line">	fmt.Println(x, y, c, python, java)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ go run short-variable.go</span><br><span class="line"></span><br><span class="line">你好 8 true false true</span><br></pre></td></tr></table></figure>
+<h4 id="变量基本类型-Base-types"><a href="#变量基本类型-Base-types" class="headerlink" title="变量基本类型(Base types)"></a>变量基本类型(Base types)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">bool  // 布尔值 true 和 false</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">string // 字符串</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">int  int8  int16  int32  int64  //整数, int8 表示8位二进制，最大为128 范围：-128 -&gt; 127，int64表示（-9,223,372,036,854,775,808 -&gt; 9,223,372,036,854,775,807）</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">uint uint8 uint16 uint32 uint64 uintptr 无符号整数</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">byte // uint8 的别名</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">rune // int32 的别名</span><br><span class="line"></span><br><span class="line">     // 代表一个Unicode码</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">float32 float64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">complex64 complex128</span><br></pre></td></tr></table></figure>
+<p>%T: 返回变量的类型值</p>
+<p>%v: 返回变量的值，默认的打印方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim basic-type.go</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line"></span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">	&quot;math/cmplx&quot;</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line"></span><br><span class="line">	ToBe   bool       = false</span><br><span class="line"></span><br><span class="line">	MaxInt uint64     = 1&lt;&lt;64 - 1</span><br><span class="line"></span><br><span class="line">	z      complex128 = cmplx.Sqrt(-5 + 12i)</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">	const f = &quot;%T(%v)\n&quot;</span><br><span class="line"></span><br><span class="line">	fmt.Printf(f, ToBe, ToBe)</span><br><span class="line"></span><br><span class="line">	fmt.Printf(f, MaxInt, MaxInt)</span><br><span class="line"></span><br><span class="line">	fmt.Printf(f, z, z)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ go run basic-type.go</span><br><span class="line"></span><br><span class="line">bool(false)</span><br><span class="line"></span><br><span class="line">uint64(18446744073709551615)</span><br><span class="line"></span><br><span class="line">complex128((2+3i))</span><br></pre></td></tr></table></figure>
+<h4 id="零值"><a href="#零值" class="headerlink" title="零值"></a>零值</h4><p>变量在定义时没有明确的初始化变量值就会被赋予<code>零值</code></p>
+<p>对于不同类型的零值是:</p>
+<ul>
+<li><p>int类型为<code>0</code></p>
+</li>
+<li><p>bool类型为<code>false</code></p>
+</li>
+<li><p>string类型为””(空)</p>
+</li>
+</ul>
+<h4 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h4><p>表达式T(v) 将<code>v</code>转为为类型T</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim type-con.go</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line"></span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">    var i int = 88</span><br><span class="line"></span><br><span class="line">    var b float64 = float64(i)</span><br><span class="line"></span><br><span class="line">	fmt.Println(b)</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	//简单形式的写法</span><br><span class="line"></span><br><span class="line">	c := 99</span><br><span class="line"></span><br><span class="line">	f := float64(c)</span><br><span class="line"></span><br><span class="line">	u := uint(f)</span><br><span class="line"></span><br><span class="line">	fmt.Println(c, f, u)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ go run type-con.go</span><br><span class="line"></span><br><span class="line">88</span><br><span class="line"></span><br><span class="line">99 99 99</span><br></pre></td></tr></table></figure>
+<h4 id="类型推导"><a href="#类型推导" class="headerlink" title="类型推导"></a>类型推导</h4><p>在定义一个变量却不指定其类型时，go会根据变量的值来推导其类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">i := 42     //int</span><br><span class="line"></span><br><span class="line">f := 3.1415  //float64</span><br></pre></td></tr></table></figure>
+<h4 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h4><p>常量的定义与变量类似，只不过使用 const 关键字。</p>
+<p>常量可以是字符、字符串、布尔或数字类型的值。</p>
+<p>常量不能使用 := 语法定义。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim const.go</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">const nu = 3.14</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">	const no = false</span><br><span class="line"></span><br><span class="line">	fmt.Println(nu, no)</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ go run const.go</span><br><span class="line"></span><br><span class="line">3.14 false</span><br></pre></td></tr></table></figure>
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>函数定义关键字使用<code>func</code> 函数名() 中括号来进行定义，函数可以没有参数，也可以接受多个参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim Add.go</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import(</span><br><span class="line"></span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func Add(x int, y int) int &#123;</span><br><span class="line"></span><br><span class="line">    return x + y</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">	fmt.Println(Add(8,9))</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ go run Add.go</span><br><span class="line"></span><br><span class="line">17</span><br></pre></td></tr></table></figure>
+<p>当两个或者多个连续的函数命名参数是同一类型，则除了最后一个类型之外，其他都可以省略</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">x int, y int</span><br><span class="line"></span><br><span class="line">// 可以写为</span><br><span class="line"></span><br><span class="line">x , y int</span><br></pre></td></tr></table></figure>
+<h4 id="多值返回"><a href="#多值返回" class="headerlink" title="多值返回"></a>多值返回</h4><p>函数可以返回任意数量的返回值。</p>
+<p><code>muti</code>函数返回了两个字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim muti.go</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func Muti(x, y string) (string, string) &#123;</span><br><span class="line"></span><br><span class="line">	return x, y</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">	fmt.Println(Muti(&quot;你好&quot;,&quot;Go&quot;))</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ go run muti.go</span><br><span class="line"></span><br><span class="line">你好 Go</span><br></pre></td></tr></table></figure>
+<h4 id="返回值命名"><a href="#返回值命名" class="headerlink" title="返回值命名"></a>返回值命名</h4><p>Go 的返回值可以被命名，并且就像在函数体开头声明的变量那样使用。</p>
+<p>没有参数的<code>return</code>返回函数中各个变量的值。这种用法被称作”裸”返回。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim name-return.go</span><br><span class="line"></span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func Split(sum int)(x, y int) &#123;</span><br><span class="line"></span><br><span class="line">	x = sum - 3</span><br><span class="line"></span><br><span class="line">	y = sum * 5 / 2</span><br><span class="line"></span><br><span class="line">	return</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">	fmt.Println(Split(50))</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$ go run name-return.go</span><br><span class="line"></span><br><span class="line">47 125</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>关于Go的基本介绍就到这里了，上述的内容会在接下来的博客进行细分详解，感谢您的阅读，祝您早日成为一个出色的Go程序员</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="3Golds 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="3Golds 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"># go</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/09/2017-11-09-opentracing-zipkin/" rel="next" title="Opentracing Zipkin">
+                <i class="fa fa-chevron-left"></i> Opentracing Zipkin
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/14/2017-12-14-Golang流程控制语句-for-if-else-switch/" rel="prev" title="Golang 流程控制语句(for、if、else、switch)">
+                Golang 流程控制语句(for、if、else、switch) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/gophers.jpg"
+                alt="3Golds" />
+            
+              <p class="site-author-name" itemprop="name">3Golds</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/3Golds" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:go80800@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Go介绍"><span class="nav-number">1.</span> <span class="nav-text">Go介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#受欢迎程度"><span class="nav-number">1.1.</span> <span class="nav-text">受欢迎程度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最受欢迎的5种语言和最想使用的语言之一"><span class="nav-number">1.2.</span> <span class="nav-text">最受欢迎的5种语言和最想使用的语言之一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go-是云基础架构语言"><span class="nav-number">1.3.</span> <span class="nav-text">Go 是云基础架构语言</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go开源软件的影响力"><span class="nav-number">1.4.</span> <span class="nav-text">Go开源软件的影响力</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hello-世界"><span class="nav-number">2.</span> <span class="nav-text">Hello 世界</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go的目录组织结构-Workspaces"><span class="nav-number">3.</span> <span class="nav-text">Go的目录组织结构(Workspaces)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go基本命令介绍"><span class="nav-number">4.</span> <span class="nav-text">Go基本命令介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#package-包"><span class="nav-number">5.</span> <span class="nav-text">package(包)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入"><span class="nav-number">6.</span> <span class="nav-text">导入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#变量"><span class="nav-number">7.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定义及初始化变量"><span class="nav-number">7.1.</span> <span class="nav-text">定义及初始化变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#短变量声明"><span class="nav-number">7.2.</span> <span class="nav-text">短变量声明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量基本类型-Base-types"><span class="nav-number">7.3.</span> <span class="nav-text">变量基本类型(Base types)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#零值"><span class="nav-number">7.4.</span> <span class="nav-text">零值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类型转换"><span class="nav-number">7.5.</span> <span class="nav-text">类型转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#类型推导"><span class="nav-number">7.6.</span> <span class="nav-text">类型推导</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常量"><span class="nav-number">7.7.</span> <span class="nav-text">常量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数"><span class="nav-number">8.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多值返回"><span class="nav-number">8.1.</span> <span class="nav-text">多值返回</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#返回值命名"><span class="nav-number">8.2.</span> <span class="nav-text">返回值命名</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">9.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">3Golds</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2159314"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bK3mQMcoKlwuLljKCOH5tsP1-gzGzoHsz", "343DJUSwdwM3miekBuwdNf24");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({});</script></body>
+</html>

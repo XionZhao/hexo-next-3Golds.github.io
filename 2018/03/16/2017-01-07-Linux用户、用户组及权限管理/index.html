@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.jpg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="user, linux user,用户权限" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="user group manager">
+<meta name="keywords" content="user, linux user,用户权限">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux用户、用户组及权限管理">
+<meta property="og:url" content="http://zhaodaxin.com/2018/03/16/2017-01-07-Linux用户、用户组及权限管理/index.html">
+<meta property="og:site_name" content="3Golds">
+<meta property="og:description" content="user group manager">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://zantony.top/uploads/quanxian.png">
+<meta property="og:updated_time" content="2018-03-16T08:50:33.800Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux用户、用户组及权限管理">
+<meta name="twitter:description" content="user group manager">
+<meta name="twitter:image" content="http://zantony.top/uploads/quanxian.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhaodaxin.com/2018/03/16/2017-01-07-Linux用户、用户组及权限管理/"/>
+
+
+
+
+
+  <title>Linux用户、用户组及权限管理 | 3Golds</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">3Golds</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ThreeGold</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhaodaxin.com/2018/03/16/2017-01-07-Linux用户、用户组及权限管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="3Golds">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/gophers.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="3Golds">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux用户、用户组及权限管理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T16:50:33+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/16/2017-01-07-Linux用户、用户组及权限管理/" class="leancloud_visitors" data-flag-title="Linux用户、用户组及权限管理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3,691
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  17
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  user group manager
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、Linux用户及用户组的基本概念"><a href="#一、Linux用户及用户组的基本概念" class="headerlink" title="一、Linux用户及用户组的基本概念"></a>一、Linux用户及用户组的基本概念</h3><p>用户：用户是实现能够将有限的资源在多个使用者之间进行分配；、<br>用户组：用户组是指多个用户的集合，方便对一类需要同样权限的用户授权<br>Linux是多用户、多任务的操作系统。<br>    多用户指：多人同时使用系统资源；多任务：同时运行多个进程</p>
+<h3 id="二、用户及用户组类别"><a href="#二、用户及用户组类别" class="headerlink" title="二、用户及用户组类别"></a>二、用户及用户组类别</h3><h4 id="1、用户：名称解析库-etc-passwd"><a href="#1、用户：名称解析库-etc-passwd" class="headerlink" title="1、用户：名称解析库 /etc/passwd"></a>1、用户：名称解析库 /etc/passwd</h4><p>a、管理员<br>root 用户标识（UID）为0<br>b、普通用户及系统用户<br>    普通用户的用户标识（既UID）：<br>        CentOS 5,6: 500+<br>        CentOS 7: 1000+<br>    系统用户用户标识（既UID）：<br>        CentOS 5,6: 1-499<br>        CentOS 7: 1-999</p>
+<h4 id="2、用户组：名称解析库-etc-group"><a href="#2、用户组：名称解析库-etc-group" class="headerlink" title="2、用户组：名称解析库 /etc/group"></a>2、用户组：名称解析库 /etc/group</h4><p>a、管理员组<br>组标识为：0<br>b、普通用户组及系统用户组<br>    普通用户组标识：<br>        CentOS 5,6: 500+<br>        CentOS 7: 1000+<br>    系统用户组标识：<br>        CentOS 5,6: 1-499<br>        CentOS 7: 1-999<br>3、用户组类别：<br>    以用户为核心分为：<br>        用户的主组：基本组；<br>        用户的附加组：额外组；<br>    以容纳的用户来划分：<br>        私有组：与用户名相同，且只有一个用户；<br>        共有组：组内包含了多个用户；</p>
+<h3 id="三、用户及用户组的认证机制"><a href="#三、用户及用户组的认证机制" class="headerlink" title="三、用户及用户组的认证机制"></a>三、用户及用户组的认证机制</h3><p>Linux的用户密码认证方式在centos7中使用sha512<br>认证信息库存储位置：<br>    用户的认证信息库：/etc/shadow<br>    组的认证信息库：/etc/gshadow<br>密码：加密存放，使用单向加密机制<br>算法：<br>md5: message digest, 128bits<br>sha1: secure hash algorithm, 160bits<br>sha224<br>sha256<br>sha384<br>sha512</p>
+<h3 id="四、权限的生效机制"><a href="#四、权限的生效机制" class="headerlink" title="四、权限的生效机制"></a>四、权限的生效机制</h3><p>进程的运行者：<br>    是否与文件的属主相同，如果是，则以文件属主的身份来访问此文件；否则<br>    是否属于文件的属组，如果是，则以文件属组的身份来访问此文件；否则<br>    以文件的其它用户的身份来访问此文件；<br><img src="http://zantony.top/uploads/quanxian.png" alt="enter image description here"></p>
+<h3 id="五、用户及用户组管理命令"><a href="#五、用户及用户组管理命令" class="headerlink" title="五、用户及用户组管理命令"></a>五、用户及用户组管理命令</h3><h4 id="groupadd命令：添加组"><a href="#groupadd命令：添加组" class="headerlink" title="groupadd命令：添加组"></a>groupadd命令：添加组</h4><p>groupadd [options] group<br>-g  GID：指明GID；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># groupadd -g 2000 testgrp</span><br><span class="line"># grep &quot;testgrp&quot; /etc/group</span><br><span class="line">testgrp:x:2000:</span><br><span class="line">    -r, --system：系统组；</span><br><span class="line"># groupadd -r testgrp1</span><br><span class="line"># grep &quot;testgrp1&quot; /etc/group</span><br><span class="line">testgrp1:x:985:</span><br></pre></td></tr></table></figure></p>
+<h4 id="groupmod命令：修改组信息"><a href="#groupmod命令：修改组信息" class="headerlink" title="groupmod命令：修改组信息"></a>groupmod命令：修改组信息</h4><p>groupmod [选项] GROUP<br>-g  GID<br>-n NEW_NAME：修改组名；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;testgrp\&gt;&quot; /etc/group</span><br><span class="line">testgrp:x:2000:</span><br><span class="line"># groupmod -g 300 -n grptest testgrp</span><br><span class="line"># grep &quot;grptest&quot; /etc/group</span><br><span class="line">grptest:x:300:</span><br></pre></td></tr></table></figure></p>
+<h4 id="groupdel命令：删除组"><a href="#groupdel命令：删除组" class="headerlink" title="groupdel命令：删除组"></a>groupdel命令：删除组</h4><p>groupdel [选项] GROUP<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;grptest&quot; /etc/group</span><br><span class="line">grptest:x:300:</span><br><span class="line"># groupdel grptest</span><br><span class="line"># grep &quot;grptest&quot; /etc/group</span><br></pre></td></tr></table></figure></p>
+<h4 id="useradd命令：添加用户"><a href="#useradd命令：添加用户" class="headerlink" title="useradd命令：添加用户"></a>useradd命令：添加用户</h4><blockquote>
+<p>useradd  [选项]  登录名<br>-c, –comment COMMENT：注释信息，一般为Full Name；<br>-d, –home  /PATH/TO/HOME_DIR：家目录路径；目标路径不能事先存在，否则会有警告，不会复制skel相关的文件给用户；<br>-g, –gid GROUP：用户的基本组组名或GID；<br>-G, –groups GROUP1[,GROUP2,…[,GROUPN]]]：用户所属的附加组列表，彼此间用逗号隔开，中间没有空格；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"># useradd -c &quot;testuser&quot; -d /home/testuser -g testgrp -G testgrp1 testuser</span><br><span class="line"># id testuser</span><br><span class="line">uid=5011(testuser) gid=5011(testgrp) groups=5011(testgrp),985(testgrp1）</span><br><span class="line">    -m, --create-home：强制创建家目录；</span><br><span class="line">            一般指当CREATE_HOME变量为设置时必须使用此参数 </span><br><span class="line">    -M：不创建用户主目录，即使系统在 /etc/login.defs 中的设置 (CREATE_HOME) 为 yes；   </span><br><span class="line"># useradd -M testuser2</span><br><span class="line"># ls /home/</span><br><span class="line">centos  gentoo   nologin    test1  test3</span><br><span class="line">fedora  mageedu  slackware  test2  testuser</span><br><span class="line">        -r, --system：创建一个系统账户</span><br><span class="line">    创建系统用的UID在0-999之内。且不创建家目录</span><br><span class="line"># useradd -r testuser3</span><br><span class="line"># id testuser3</span><br><span class="line">uid=990(testuser3) gid=984(testuser3) groups=984(testuser3)</span><br><span class="line"># ls /home/</span><br><span class="line">centos  gentoo   nologin    test1  test3</span><br><span class="line">fedora  mageedu  slackware  test2  testuser</span><br><span class="line">    -s, --shell SHELL：用户的登录 shell 名，默认为留空，让系统根据 /etc/default/useradd 中的 SHELL 变量选择默认的登录shell；</span><br><span class="line">    -u, --uid UID：用户 ID 的数字值。此值必须为唯一的，除非使用了 -o 选项。此值必须非负，默认使用大于等于UID_MIN，且大于任何其他用户 ID 最小值。</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># cat /etc/shells </span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/sbin/nologin</span><br><span class="line">/usr/bin/sh</span><br><span class="line">/usr/bin/bash</span><br><span class="line">/usr/sbin/nologin</span><br><span class="line">/bin/tcsh</span><br><span class="line">/bin/csh</span><br><span class="line"># useradd -s /bin/bash -u 3001 testuser4</span><br><span class="line"># grep &quot;testuser4\&gt;&quot; /etc/passwd</span><br><span class="line">testuser4:x:3001:3001::/home/testuser4:/bin/bash</span><br><span class="line">注意：创建登录用户时，为其自定义的shell程序必须为可登录shell，且要位于/etc/shells文件中；</span><br><span class="line">        useradd -D：显示创建用户时的默认设置；</span><br><span class="line">useradd -D  选项：设置某默认选项；</span><br><span class="line">    -e, --expiredate  EXPIRE_DATE：用户账号的过期期限；过期后会被锁定；日期以 YYYY-MM-DD 格式指定</span><br><span class="line">    -f, --inactive INACTIVE：密码过期后，账户被彻底禁用之前的天数。0 表示立即禁用，-1 表示禁用这个功能。</span><br><span class="line"># useradd -D</span><br><span class="line">GROUP=100</span><br><span class="line">HOME=/home</span><br><span class="line">INACTIVE=-1</span><br><span class="line">EXPIRE=</span><br><span class="line">SHELL=/bin/bash</span><br><span class="line">SKEL=/etc/skel</span><br><span class="line">CREATE_MAIL_SPOOL=yes</span><br><span class="line"># useradd -e 2020-03-08 testuser5</span><br><span class="line"># useradd -f 3 testuser6</span><br><span class="line">    为用户提供默认配置的配置文件：</span><br><span class="line">/etc/login.defs, /etc/default/useradd</span><br><span class="line">影子口令文件：/etc/shadow</span><br><span class="line">/etc/shadow每个字段的意思：</span><br><span class="line">            登录名:密码:最近一次的修改时间:密码的最短使用期限:密码最长使用期限:提前警告的天数:非活动期限:账号的禁用日期:保留字段</span><br></pre></td></tr></table></figure>
+<h4 id="usermod命令：修改账号信息"><a href="#usermod命令：修改账号信息" class="headerlink" title="usermod命令：修改账号信息"></a>usermod命令：修改账号信息</h4><blockquote>
+<p>-c, –comment  COMMENT<br>-d, –home  HOME_DIR：修改家目录为新的位置，但一般应该同时使用-m选项以保证原家目录中的文件会移动到新目录中；<br>-g, –gid GROUP<br>-G, –groups  GRO    UP1[,GROUP2,…[,GROUPN]]]：修改时会覆盖原有的附加组；一同使用-a选项，表示为用户添加新的附加组；<br>-l, –login  NEW_LOGIN：修改当前用户的用户名；<br>-s, –shell  SHELL<br>-u, –uid  UID<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;mageedu&quot; /etc/passwd</span><br><span class="line">mageedu:x:5015:5015:mageedu:/home/mageedu:/bin/bash</span><br><span class="line"># usermod -c &quot;this is mageedu&quot; -m -d /opt/mageedu -g 5000 -G 6000 -l mageedugood -u 3000 mageedu</span><br><span class="line"># grep &quot;mageedu&quot; /etc/passwd</span><br><span class="line">mageedugood:x:3000:5000:this is mageedu:/opt/mageedu:/bin/bash</span><br><span class="line"># id mageedugood</span><br><span class="line">uid=3000(mageedugood) gid=5000(mage) groups=5000(mage),6000(xueba)</span><br><span class="line">    -L, --lock：锁定用户的密码。这会在用户加密的密码之前放置一个“!”</span><br><span class="line">    -U, --unlock：解锁用户的密码。这将移除加密的密码之前的“!”</span><br><span class="line"># grep &quot;mageedu&quot; /etc/shadow</span><br><span class="line">mageedugood:$6$MKpxQ.kL$o6IBhP9uXHlccwXLUubV.Xp.k4KVJ5mTEtPtDeyoz4O38FRq1wuiyH1vyYlHEy9uqRt7a1Mzzf0bCnCKrtxHL/:16868:0:99999:7:::</span><br><span class="line"># usermod -L mageedugood</span><br><span class="line"># grep &quot;mageedu&quot; /etc/shadow   #此处可以看到锁定后在密码前面有一个!号</span><br><span class="line">mageedugood:!$6$MKpxQ.kL$o6IBhP9uXHlccwXLUubV.Xp.k4KVJ5mTEtPtDeyoz4O38FRq1wuiyH1vyYlHEy9uqRt7a1Mzzf0bCnCKrtxHL/:16868:0:99999:7:::</span><br><span class="line"># usermod -U mageedugood</span><br><span class="line"># grep &quot;mageedu&quot; /etc/shadow</span><br><span class="line">mageedugood:$6$MKpxQ.kL$o6IBhP9uXHlccwXLUubV.Xp.k4KVJ5mTEtPtDeyoz4O38FRq1wuiyH1vyYlHEy9uqRt7a1Mzzf0bCnCKrtxHL/:16868:0:99999:7:::</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h4 id="userdel命令：删除用户账号"><a href="#userdel命令：删除用户账号" class="headerlink" title="userdel命令：删除用户账号"></a>userdel命令：删除用户账号</h4><p>userdel [选项]  登录名<br>-r, –remove：用户主目录中的文件将随用户主目录和用户邮箱一起删除<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># userdel -r mageedugood</span><br><span class="line"># id mageedugood</span><br><span class="line">id: mageedugood: no such user</span><br><span class="line"># ls /home/  #加上-r选项后同时删除用户的家目录以及用户邮箱</span><br><span class="line">centos  gentoo   slackware  test2  testuser   testuser5</span><br><span class="line">fedora  nologin  test1      test3  testuser4  testuser6</span><br><span class="line"># userdel test1</span><br><span class="line"># ls /home/   #未加-r可以找到test1用户的家目录</span><br><span class="line">centos  gentoo   slackware  test2  testuser   testuser5</span><br><span class="line">fedora  nologin  test1      test3  testuser4  testuser6</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># id test1</span><br><span class="line">id: test1: no such user</span><br></pre></td></tr></table></figure>
+<h4 id="passwd命令：密码管理命令"><a href="#passwd命令：密码管理命令" class="headerlink" title="passwd命令：密码管理命令"></a>passwd命令：密码管理命令</h4><p>(1) passwd：修改自己的密码；<br>(2) passwd  username：修改其它用户的密码，仅root有此权限；<br>密码复杂度：<br>        (1) 不能少于8个字符；<br>        (2) 不能使用与过去的密码太相似的密码；<br>        (3) 应该使用四类字符中的至少三类；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># passwd test2</span><br><span class="line">Changing password for user test2.</span><br><span class="line">New password: </span><br><span class="line">BAD PASSWORD: The password is shorter than 8 characters</span><br><span class="line">Retype new password: </span><br><span class="line">passwd: all authentication tokens updated successfully.</span><br><span class="line">选项：</span><br><span class="line">	    -l：锁定密码</span><br><span class="line">	    -u：解锁解密</span><br><span class="line">	    -d：清除密码</span><br><span class="line"># grep &quot;test2&quot; /etc/shadow</span><br><span class="line">test2:$6$9E3j7rHK$XBRQVO0SVqivKXi7gHTadSjAkjpZz72YsGa60xHK.uUQlnHhsD8w4ttT466ADR9AuXz8KrBWhxRfnGHeFGXiZ/:16868:0:99999:7:::</span><br><span class="line"># passwd -l test2</span><br><span class="line">Locking password for user test2.</span><br><span class="line">passwd: Success</span><br><span class="line"># grep &quot;test2&quot; /etc/shadow</span><br><span class="line">test2:!!$6$9E3j7rHK$XBRQVO0SVqivKXi7gHTadSjAkjpZz72YsGa60xHK.uUQlnHhsD8w4ttT466ADR9AuXz8KrBWhxRfnGHeFGXiZ/:16868:0:99999:7:::</span><br><span class="line"># passwd -u test2</span><br><span class="line">Unlocking password for user test2.</span><br><span class="line">passwd: Success</span><br><span class="line"># grep &quot;test2&quot; /etc/shadow</span><br><span class="line">test2:$6$9E3j7rHK$XBRQVO0SVqivKXi7gHTadSjAkjpZz72YsGa60xHK.uUQlnHhsD8w4ttT466ADR9AuXz8KrBWhxRfnGHeFGXiZ/:16868:0:99999:7:::</span><br><span class="line"># passwd -d test2</span><br><span class="line">Removing password for user test2.</span><br><span class="line">passwd: Success</span><br><span class="line"># grep &quot;test2&quot; /etc/shadow</span><br><span class="line">test2::16868:0:99999:7:::</span><br><span class="line">    与usermod不同的是，passwd在锁定时密码前面有两个!!号</span><br></pre></td></tr></table></figure></p>
+<h4 id="特殊用法：可以避免交互式"><a href="#特殊用法：可以避免交互式" class="headerlink" title="特殊用法：可以避免交互式"></a>特殊用法：可以避免交互式</h4><p>–stdin：从标准输入接收密码；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;PASSWORD&quot; | passwd  --stdin  USERNAME</span><br><span class="line"># echo &quot;mageedu&quot;|passwd --stdin test2</span><br><span class="line">Changing password for user test2.</span><br><span class="line">passwd: all authentication tokens updated successfully.</span><br></pre></td></tr></table></figure></p>
+<h4 id="gpasswd命令：为组添加密码"><a href="#gpasswd命令：为组添加密码" class="headerlink" title="gpasswd命令：为组添加密码"></a>gpasswd命令：为组添加密码</h4><p>组密码文件：/etc/gshadow<br>gpasswd [选项] group<br>-a USERNAME：把用户添加至组中；<br>-d USERNAME：从此组中移除此用户；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># gpasswd -a test3 xueba</span><br><span class="line">Adding user test3 to group xueba</span><br><span class="line"># grep &quot;xueba&quot; /etc/gshadow</span><br><span class="line">xueba:$6$bxtP5/lZt$umET9D6NeQrdWDGNG0LfpUQiJ5Poq8Xa0GoaDQqJFvqLVm3GWrCxOtDnCXbGjZngS4S7lumQE9hW18DgWPBrm.::test2,test3</span><br><span class="line"># gpasswd -d test2 xueba</span><br><span class="line">Removing user test2 from group xueba</span><br><span class="line"># grep &quot;xueba&quot; /etc/gshadow</span><br><span class="line">xueba:$6$bxtP5/lZt$umET9D6NeQrdWDGNG0LfpUQiJ5Poq8Xa0GoaDQqJFvqLVm3GWrCxOtDnCXbGjZngS4S7lumQE9hW18DgWPBrm.::test3</span><br></pre></td></tr></table></figure></p>
+<h4 id="newgrp命令：登录到一个新组"><a href="#newgrp命令：登录到一个新组" class="headerlink" title="newgrp命令：登录到一个新组"></a>newgrp命令：登录到一个新组</h4><h4 id="chage命令：修改用户账号的各种期限；"><a href="#chage命令：修改用户账号的各种期限；" class="headerlink" title="chage命令：修改用户账号的各种期限；"></a>chage命令：修改用户账号的各种期限；</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ touch testfile</span><br><span class="line">$ ll testfile </span><br><span class="line">-rw-rw-r-- 1 test2 test2 0 Mar  8 12:43 testfile</span><br><span class="line">$ newgrp xueba</span><br><span class="line">$ touch testfile2</span><br><span class="line">$ ll testfile2 </span><br><span class="line">-rw-r--r-- 1 test2 xueba 0 Mar  8 12:44 testfile2</span><br></pre></td></tr></table></figure>
+<h3 id="五、文件系统权限简介"><a href="#五、文件系统权限简介" class="headerlink" title="五、文件系统权限简介"></a>五、文件系统权限简介</h3><h4 id="文件系统文件权限："><a href="#文件系统文件权限：" class="headerlink" title="文件系统文件权限："></a>文件系统文件权限：</h4><blockquote>
+<p>三类用户：<br>属主：owner, u<br>属组：group, g<br>其它：other, o<br>所有：All，a<br>权限：<br>r: readable，可读<br>w: writable, 可写<br>x：excutable, 可执行<br>权限管理：<br>文件：<br>r：可获取文件的数据；<br>w：可修改文件的数据；<br>x：可将此文件运行为进程；<br>目录：<br>r：可使用ls命令获取其下的所有文件列表；但不可以使用“ls -l”去获取详细信息，也不可以cd至此目录中；<br>w：可修改此目录下的文件列表， 即可以在此目录下创建或删除文件；<br>x：可以使用”ls -l“命令来获取其下的文件的详细属性信息，也可cd至此目录中；</p>
+</blockquote>
+<h3 id="六、文件系统权限管理命令"><a href="#六、文件系统权限管理命令" class="headerlink" title="六、文件系统权限管理命令"></a>六、文件系统权限管理命令</h3><h4 id="chmod命令："><a href="#chmod命令：" class="headerlink" title="chmod命令："></a>chmod命令：</h4><blockquote>
+<p>作用：change file mode bits<br>        使用方式：<br>    chmod [OPTION]… MODE[,MODE]… FILE…</p>
+</blockquote>
+<pre><code>    # 以ugoa的方式来进行授权
+chmod [OPTION]... OCTAL-MODE FILE...
+    # 权限数字是数值模式：是从一到四的八进制数字（0-7），分别用4（读权限） 2（写权限）             1（可执行权限） 
+chmod [OPTION]... --reference=RFILE FILE...
+    # 标识权限参照某文件修改
+</code></pre><h5 id="1-chmod-OPTION-…-MODE-MODE-…-FILE…"><a href="#1-chmod-OPTION-…-MODE-MODE-…-FILE…" class="headerlink" title="(1) chmod [OPTION]… MODE[,MODE]… FILE…"></a>(1) chmod [OPTION]… MODE[,MODE]… FILE…</h5><blockquote>
+<p>MODE：<br>    赋权表示法：直接操作一类用户的所有权限位rwx；<br>            u=<br>            g=<br>            o=<br>            a=<br>            两类用户权限相同：ug=, go=<br>            不同类的用户权限不同：u=,g=,o=<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"># chmod u=r,g=w,o=x fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-r---w---x 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"></span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-r---w---x 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"># chmod a=rw fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rw-rw-rw- 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line">    授权表示法：操作一类用户一位或多位权限；</span><br><span class="line">	        u+, u-</span><br><span class="line">	        g+, g-</span><br><span class="line">	        o+, o-</span><br><span class="line">	        a+, a-</span><br><span class="line">	        两类用户权限收授机制相同：ug+, ug-, ...</span><br><span class="line">	        不同类的用户权限不同：u+,g+,o+</span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rw-rw-rw- 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"># chmod u+x,g-w,o-r fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rwxr---w- 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"></span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rwxr-xr-x 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"># chmod ug-x,o+w fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rw-r--rwx 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"></span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-r--r--r-x 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"># chmod a+w fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rw-rw-rwx 1 root root 595 Mar  8 15:57 fstab</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h5 id="2-chmod-OPTION-…-OCTAL-MODE-FILE…"><a href="#2-chmod-OPTION-…-OCTAL-MODE-FILE…" class="headerlink" title="(2) chmod [OPTION]… OCTAL-MODE FILE…"></a>(2) chmod [OPTION]… OCTAL-MODE FILE…</h5><blockquote>
+<p>OCTAL-MODE：权限标识<br>r：4<br>w：2<br>x：1<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># chmod 755 fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rwxr-xr-x 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"></span><br><span class="line"># chmod 600 fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rw------- 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"></span><br><span class="line"># chmod 644 fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line">注意：使用数字标识权限时不可省略，例如：</span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"># chmod 60 fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">----rw---- 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line">这里本来要改文件的属主为6（rw），文件的属组没有权限，但是更改后就变成属组为6，而属主与其他用户没有权限</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h5 id="3-chmod-OPTION-…-–reference-RFILE-FILE…"><a href="#3-chmod-OPTION-…-–reference-RFILE-FILE…" class="headerlink" title="(3) chmod [OPTION]… –reference=RFILE FILE…"></a>(3) chmod [OPTION]… –reference=RFILE FILE…</h5><blockquote>
+<p>常用选项：<br>-R, –recursive：递归修改；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># ll mode/</span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 595 Mar  8 16:13 fstab</span><br><span class="line"># ll mode/ -d</span><br><span class="line">drwxr-xr-x 2 root root 18 Mar  8 16:13 mode/</span><br><span class="line"># chmod -R o+w mode/</span><br><span class="line"># ll mode/ -d</span><br><span class="line">drwxr-xrwx 2 root root 18 Mar  8 16:13 mode/</span><br><span class="line"># ll mode/</span><br><span class="line">total 4</span><br><span class="line">-rw-r--rw- 1 root root 595 Mar  8 16:13 fstab</span><br><span class="line">            --reference=RFILE：RFILE表示参考其权限模型；</span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">----rw---- 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"># ll /etc/fstab </span><br><span class="line">-rw-r--r--. 1 root root 595 Mar 12  2016 /etc/fstab</span><br><span class="line"># chmod --reference=/etc/fstab /tmp/fstab </span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rw-r--r-- 1 root root 595 Mar  8 15:57 fstab</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h6 id="chown命令：修改属主或属组"><a href="#chown命令：修改属主或属组" class="headerlink" title="chown命令：修改属主或属组"></a>chown命令：修改属主或属组</h6><blockquote>
+<p>chown [OPTION]… [OWNER][:[GROUP]] FILE…<br>chown [OPTION]… –reference=RFILE  FILE…<br>此处也是参照文件修改，只是此处修改的是属主和属组（ 注意：此处不修改权限）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># ll -d mode/</span><br><span class="line">drwxr-xrwx 2 root root 18 Mar  8 16:13 mode/</span><br><span class="line"># chown mageedu.mageedu mode/</span><br><span class="line"># ll -d mode/</span><br><span class="line">drwxr-xrwx 2 mageedu mageedu 18 Mar  8 16:13 mode/</span><br><span class="line"></span><br><span class="line"># ll fstab </span><br><span class="line">-rwxr-xr-x 1 root root 595 Mar  8 15:57 fstab</span><br><span class="line"># chown .mageedu fstab    #此处表示修改属组(属组与属主的分隔符可以用点或者冒号(.或:)</span><br><span class="line"># ll fstab </span><br><span class="line">-rwxr-xr-x 1 root mageedu 595 Mar  8 15:57 fstab</span><br><span class="line"># chown mageedu. fstab    #此处表示修改属主</span><br><span class="line"># ll</span><br><span class="line">total 4</span><br><span class="line">-rwxr-xr-x 1 mageedu mageedu 595 Mar  8 15:57 fstab</span><br><span class="line">常用选项：</span><br><span class="line">	    -R, --recursive：递归修改；</span><br><span class="line">                # 与chmod使用方式相同，此处不在过多介绍</span><br><span class="line">chgrp命令：修改属组</span><br><span class="line">    chgrp [OPTION]... GROUP FILE...</span><br><span class="line">    chgrp [OPTION]... --reference=RFILE FILE...</span><br><span class="line"># ll fstab </span><br><span class="line">-rwxr-xr-x 1 mageedu mageedu 595 Mar  8 15:57 fstab</span><br><span class="line"># chgrp xueba fstab </span><br><span class="line"># ll fstab</span><br><span class="line">-rwxr-xr-x 1 mageedu xueba   595 Mar  8 15:57 fstab</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<h3 id="六、下面介绍几个比较实用的用户与用户组相关的Linux命令"><a href="#六、下面介绍几个比较实用的用户与用户组相关的Linux命令" class="headerlink" title="六、下面介绍几个比较实用的用户与用户组相关的Linux命令"></a>六、下面介绍几个比较实用的用户与用户组相关的Linux命令</h3><h4 id="chsh命令：修改用户的登录shell"><a href="#chsh命令：修改用户的登录shell" class="headerlink" title="chsh命令：修改用户的登录shell"></a>chsh命令：修改用户的登录shell</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chsh [option] [username]</span><br><span class="line">-s：指定shell</span><br><span class="line">-l：查看可用shell列表</span><br></pre></td></tr></table></figure>
+<h4 id="chfn命令：修改用户的详细信息"><a href="#chfn命令：修改用户的详细信息" class="headerlink" title="chfn命令：修改用户的详细信息"></a>chfn命令：修改用户的详细信息</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chfn [option] [username]</span><br><span class="line">-f,--full-name 名字</span><br><span class="line">-o,--office 办公地址</span><br><span class="line">-p,--office-phone 办公电话</span><br></pre></td></tr></table></figure>
+<h4 id="finger命令：用户信息查找程序"><a href="#finger命令：用户信息查找程序" class="headerlink" title="finger命令：用户信息查找程序"></a>finger命令：用户信息查找程序</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">finger [-lmsp] [user ...] [user@host ...]</span><br><span class="line">-s：显示用户的列出该用户的帐号名称，真实姓名，登入终端机，闲置时间，登入时间以及地址和电话；</span><br></pre></td></tr></table></figure>
+<h4 id="pwck：用来验证-etc-passwd和-etc-shadow文件的内容格式完整性"><a href="#pwck：用来验证-etc-passwd和-etc-shadow文件的内容格式完整性" class="headerlink" title="pwck：用来验证/etc/passwd和/etc/shadow文件的内容格式完整性"></a>pwck：用来验证/etc/passwd和/etc/shadow文件的内容格式完整性</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pwck [options] [passwd [ shadow ]]</span><br><span class="line">-s：以用户id排序文件 /etc/passwd /etc/shadow</span><br><span class="line">-r：只读方式运行命令</span><br></pre></td></tr></table></figure>
+<h4 id="grpck：用来验证-etc-group-etc-gshadow件的内容格式完整性"><a href="#grpck：用来验证-etc-group-etc-gshadow件的内容格式完整性" class="headerlink" title="grpck：用来验证/etc/group /etc/gshadow件的内容格式完整性"></a>grpck：用来验证/etc/group /etc/gshadow件的内容格式完整性</h4><h4 id="grpck-options-group-shadow"><a href="#grpck-options-group-shadow" class="headerlink" title="grpck [options] [group [ shadow ]]"></a>grpck [options] [group [ shadow ]]</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-s：以组id排序文件 /etc/group /etc/gshadow</span><br><span class="line">-r：只读方式运行命令</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>作者：Antony WX&amp;QQ：1257465991<br>Q/A：如有问题请慷慨提出</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="3Golds 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="3Golds 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/2017-01-07-Linux三剑客之grep/" rel="next" title="Linux三剑客之grep">
+                <i class="fa fa-chevron-left"></i> Linux三剑客之grep
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/2017-01-07-Nginx-PHP编译安装/" rel="prev" title="Nginx+PHP编译安装">
+                Nginx+PHP编译安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/gophers.jpg"
+                alt="3Golds" />
+            
+              <p class="site-author-name" itemprop="name">3Golds</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/3Golds" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:go80800@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Linux用户及用户组的基本概念"><span class="nav-number">1.</span> <span class="nav-text">一、Linux用户及用户组的基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、用户及用户组类别"><span class="nav-number">2.</span> <span class="nav-text">二、用户及用户组类别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、用户：名称解析库-etc-passwd"><span class="nav-number">2.1.</span> <span class="nav-text">1、用户：名称解析库 /etc/passwd</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、用户组：名称解析库-etc-group"><span class="nav-number">2.2.</span> <span class="nav-text">2、用户组：名称解析库 /etc/group</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、用户及用户组的认证机制"><span class="nav-number">3.</span> <span class="nav-text">三、用户及用户组的认证机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、权限的生效机制"><span class="nav-number">4.</span> <span class="nav-text">四、权限的生效机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、用户及用户组管理命令"><span class="nav-number">5.</span> <span class="nav-text">五、用户及用户组管理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#groupadd命令：添加组"><span class="nav-number">5.1.</span> <span class="nav-text">groupadd命令：添加组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#groupmod命令：修改组信息"><span class="nav-number">5.2.</span> <span class="nav-text">groupmod命令：修改组信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#groupdel命令：删除组"><span class="nav-number">5.3.</span> <span class="nav-text">groupdel命令：删除组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#useradd命令：添加用户"><span class="nav-number">5.4.</span> <span class="nav-text">useradd命令：添加用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#usermod命令：修改账号信息"><span class="nav-number">5.5.</span> <span class="nav-text">usermod命令：修改账号信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#userdel命令：删除用户账号"><span class="nav-number">5.6.</span> <span class="nav-text">userdel命令：删除用户账号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#passwd命令：密码管理命令"><span class="nav-number">5.7.</span> <span class="nav-text">passwd命令：密码管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特殊用法：可以避免交互式"><span class="nav-number">5.8.</span> <span class="nav-text">特殊用法：可以避免交互式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gpasswd命令：为组添加密码"><span class="nav-number">5.9.</span> <span class="nav-text">gpasswd命令：为组添加密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#newgrp命令：登录到一个新组"><span class="nav-number">5.10.</span> <span class="nav-text">newgrp命令：登录到一个新组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chage命令：修改用户账号的各种期限；"><span class="nav-number">5.11.</span> <span class="nav-text">chage命令：修改用户账号的各种期限；</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、文件系统权限简介"><span class="nav-number">6.</span> <span class="nav-text">五、文件系统权限简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件系统文件权限："><span class="nav-number">6.1.</span> <span class="nav-text">文件系统文件权限：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、文件系统权限管理命令"><span class="nav-number">7.</span> <span class="nav-text">六、文件系统权限管理命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#chmod命令："><span class="nav-number">7.1.</span> <span class="nav-text">chmod命令：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-chmod-OPTION-…-MODE-MODE-…-FILE…"><span class="nav-number">7.1.1.</span> <span class="nav-text">(1) chmod [OPTION]… MODE[,MODE]… FILE…</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-chmod-OPTION-…-OCTAL-MODE-FILE…"><span class="nav-number">7.1.2.</span> <span class="nav-text">(2) chmod [OPTION]… OCTAL-MODE FILE…</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-chmod-OPTION-…-–reference-RFILE-FILE…"><span class="nav-number">7.1.3.</span> <span class="nav-text">(3) chmod [OPTION]… –reference=RFILE FILE…</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#chown命令：修改属主或属组"><span class="nav-number">7.1.3.1.</span> <span class="nav-text">chown命令：修改属主或属组</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、下面介绍几个比较实用的用户与用户组相关的Linux命令"><span class="nav-number">8.</span> <span class="nav-text">六、下面介绍几个比较实用的用户与用户组相关的Linux命令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#chsh命令：修改用户的登录shell"><span class="nav-number">8.1.</span> <span class="nav-text">chsh命令：修改用户的登录shell</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chfn命令：修改用户的详细信息"><span class="nav-number">8.2.</span> <span class="nav-text">chfn命令：修改用户的详细信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#finger命令：用户信息查找程序"><span class="nav-number">8.3.</span> <span class="nav-text">finger命令：用户信息查找程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#pwck：用来验证-etc-passwd和-etc-shadow文件的内容格式完整性"><span class="nav-number">8.4.</span> <span class="nav-text">pwck：用来验证/etc/passwd和/etc/shadow文件的内容格式完整性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grpck：用来验证-etc-group-etc-gshadow件的内容格式完整性"><span class="nav-number">8.5.</span> <span class="nav-text">grpck：用来验证/etc/group /etc/gshadow件的内容格式完整性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grpck-options-group-shadow"><span class="nav-number">8.6.</span> <span class="nav-text">grpck [options] [group [ shadow ]]</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">3Golds</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2159314"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bK3mQMcoKlwuLljKCOH5tsP1-gzGzoHsz", "343DJUSwdwM3miekBuwdNf24");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({});</script></body>
+</html>

@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.jpg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、git install123456789101112Ubuntusudo apt-get install gitCentosyum install git  Macbrew install git 二、git initialization configure1234git config --global user.name &amp;quot;Your Name&amp;quot;git config --g">
+<meta name="keywords" content="git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git基础">
+<meta property="og:url" content="http://zhaodaxin.com/2017/01/07/2017-01-07-git/index.html">
+<meta property="og:site_name" content="3Golds">
+<meta property="og:description" content="一、git install123456789101112Ubuntusudo apt-get install gitCentosyum install git  Macbrew install git 二、git initialization configure1234git config --global user.name &amp;quot;Your Name&amp;quot;git config --g">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-16T08:50:33.802Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git基础">
+<meta name="twitter:description" content="一、git install123456789101112Ubuntusudo apt-get install gitCentosyum install git  Macbrew install git 二、git initialization configure1234git config --global user.name &amp;quot;Your Name&amp;quot;git config --g">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhaodaxin.com/2017/01/07/2017-01-07-git/"/>
+
+
+
+
+
+  <title>Git基础 | 3Golds</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">3Golds</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ThreeGold</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhaodaxin.com/2017/01/07/2017-01-07-git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="3Golds">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/gophers.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="3Golds">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-07T00:00:00+08:00">
+                2017-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/01/07/2017-01-07-git/" class="leancloud_visitors" data-flag-title="Git基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,538
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、git-install"><a href="#一、git-install" class="headerlink" title="一、git install"></a>一、git install</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Ubuntu</span><br><span class="line"></span><br><span class="line">sudo apt-get install git</span><br><span class="line"></span><br><span class="line">Centos</span><br><span class="line"></span><br><span class="line">yum install git  </span><br><span class="line"></span><br><span class="line">Mac</span><br><span class="line"></span><br><span class="line">brew install git</span><br></pre></td></tr></table></figure>
+<h3 id="二、git-initialization-configure"><a href="#二、git-initialization-configure" class="headerlink" title="二、git initialization configure"></a>二、git initialization configure</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">git config --global user.name &quot;Your Name&quot;</span><br><span class="line"></span><br><span class="line">git config --global user.email &quot;email@example.com&quot;</span><br></pre></td></tr></table></figure>
+<h6 id="注意git-config命令的-global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址"><a href="#注意git-config命令的-global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址" class="headerlink" title="注意git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址"></a>注意<code>git config</code>命令的<code>--global</code>参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址</h6><h3 id="三、git-create-repository"><a href="#三、git-create-repository" class="headerlink" title="三、git create repository"></a>三、git create repository</h3><ul>
+<li>git版本库，也叫仓库，英文为<code>repository</code>，可以理解为一个目录，目录里的文件都可以被git管理起来，每个文件的修改、删除Git都能跟踪，以便任何时候都能够追踪历史，或者将来在某个时刻可以还原。</li>
+</ul>
+<h5 id="1、创建一个目录"><a href="#1、创建一个目录" class="headerlink" title="1、创建一个目录"></a>1、创建一个目录</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ mkdir gitrepo</span><br><span class="line"></span><br><span class="line">$ cd gitrepo</span><br><span class="line"></span><br><span class="line">$ pwd</span><br><span class="line"></span><br><span class="line">/Users/antony/gitrepo</span><br></pre></td></tr></table></figure>
+<p><code>注意：目录不要包含中文</code></p>
+<h5 id="2、通过-git-init-命令把这个目录变成Git可以管理的仓库"><a href="#2、通过-git-init-命令把这个目录变成Git可以管理的仓库" class="headerlink" title="2、通过 git init 命令把这个目录变成Git可以管理的仓库"></a>2、通过 <code>git init</code> 命令把这个目录变成Git可以管理的仓库</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git init</span><br><span class="line"></span><br><span class="line">Initialized empty Git repository in /Users/antony/gitrepo/.git/</span><br></pre></td></tr></table></figure>
+<p>瞬间Git就把仓库建好了，而且告诉你是一个空的仓库（empty Git repository），细心的读者可以发现当前目录下多了一个<code>.git</code>的目录，这个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。</p>
+<h3 id="四、提交一个文件到仓库"><a href="#四、提交一个文件到仓库" class="headerlink" title="四、提交一个文件到仓库"></a>四、提交一个文件到仓库</h3><h5 id="1、创建一个文件"><a href="#1、创建一个文件" class="headerlink" title="1、创建一个文件"></a>1、创建一个文件</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim readme.txt</span><br><span class="line"></span><br><span class="line">This is a test file</span><br><span class="line"></span><br><span class="line">Git is a opensource app</span><br></pre></td></tr></table></figure>
+<p>此文件一定要放在刚才创建的仓库下，即<code>gitrepo</code></p>
+<h5 id="2、用命令git-add将文件添加到仓库"><a href="#2、用命令git-add将文件添加到仓库" class="headerlink" title="2、用命令git add将文件添加到仓库"></a>2、用命令<code>git add</code>将文件添加到仓库</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git add readme.txt</span><br></pre></td></tr></table></figure>
+<h5 id="3、用命令git-commit告诉Git，把文件提交到git仓库"><a href="#3、用命令git-commit告诉Git，把文件提交到git仓库" class="headerlink" title="3、用命令git commit告诉Git，把文件提交到git仓库"></a>3、用命令<code>git commit</code>告诉Git，把文件提交到git仓库</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git commit -m &quot;up a readme file&quot;</span><br><span class="line"></span><br><span class="line">[master (root-commit) ba4d5a3] up a readme file</span><br><span class="line"></span><br><span class="line"> 1 file changed, 2 insertions(+)</span><br><span class="line"></span><br><span class="line"> create mode 100644 readme.txt</span><br></pre></td></tr></table></figure>
+<p><code>-m</code> 添加描述，一般用来告诉此次提交的说明</p>
+<p>为什么添加文件需要<code>add</code>,<code>commit</code>两步呢？ 因为<code>commit</code>一次可以提交多个文件，所以你可以多次<code>add</code>不同文件,比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git add file1</span><br><span class="line"></span><br><span class="line">$ git add file2 file3</span><br><span class="line"></span><br><span class="line">$ git commit -m &quot;file2 file3&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="五、Git-Status、diff（状态、对比）"><a href="#五、Git-Status、diff（状态、对比）" class="headerlink" title="五、Git Status、diff（状态、对比）"></a>五、Git Status、diff（状态、对比）</h3><h5 id="1、Status"><a href="#1、Status" class="headerlink" title="1、Status"></a>1、Status</h5><p><code>修改文件</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim readme.txt #在最后一行新添加一行</span><br><span class="line"></span><br><span class="line">New line</span><br></pre></td></tr></table></figure>
+<p><code>查看状态</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line">On branch master</span><br><span class="line"></span><br><span class="line">Changes not staged for commit:</span><br><span class="line"></span><br><span class="line">  (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span><br><span class="line"></span><br><span class="line">  (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	modified:   readme.txt</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</span><br></pre></td></tr></table></figure>
+<p><code>git status</code> 时刻查看文件的状态，通过返回信息告诉我们文件被修改了</p>
+<h5 id="2、diff（查看具体修改内容）"><a href="#2、diff（查看具体修改内容）" class="headerlink" title="2、diff（查看具体修改内容）"></a>2、diff（查看具体修改内容）</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git diff readme.txt</span><br><span class="line"></span><br><span class="line">diff --git a/readme.txt b/readme.txt</span><br><span class="line"></span><br><span class="line">index 194380c..e8e4b8b 100644</span><br><span class="line"></span><br><span class="line">--- a/readme.txt</span><br><span class="line"></span><br><span class="line">+++ b/readme.txt</span><br><span class="line"></span><br><span class="line">@@ -1,2 +1,3 @@</span><br><span class="line"></span><br><span class="line"> This is a test file</span><br><span class="line"></span><br><span class="line"> Git is a opensource app</span><br><span class="line"></span><br><span class="line">+New line</span><br><span class="line"></span><br><span class="line">(END)</span><br></pre></td></tr></table></figure>
+<h5 id="3、查看add及commit后的状态"><a href="#3、查看add及commit后的状态" class="headerlink" title="3、查看add及commit后的状态"></a>3、查看add及commit后的状态</h5><p><code>git add后的状态</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git add readme.txt</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line">On branch master</span><br><span class="line"></span><br><span class="line">Changes to be committed:</span><br><span class="line"></span><br><span class="line">  (use &quot;git reset HEAD &lt;file&gt;...&quot; to unstage)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	modified:   readme.txt</span><br></pre></td></tr></table></figure>
+<p><code>git commit后的状态</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git commit -m &quot;add new line&quot;</span><br><span class="line"></span><br><span class="line">[master a782d05] add new line</span><br><span class="line"></span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line"></span><br><span class="line">$ git status</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">On branch master</span><br><span class="line"></span><br><span class="line">nothing to commit, working tree clean</span><br></pre></td></tr></table></figure>
+<h3 id="六、版本回退"><a href="#六、版本回退" class="headerlink" title="六、版本回退"></a>六、版本回退</h3><p><strong>先修改一次文件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim readme.txt</span><br><span class="line"></span><br><span class="line">New line 2</span><br></pre></td></tr></table></figure>
+<p><strong>提交文件</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git add readme.txt</span><br><span class="line"></span><br><span class="line">$ git commit -m &quot;New line 2&quot;</span><br><span class="line"></span><br><span class="line">[master def33d7] New line 2</span><br><span class="line"></span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br></pre></td></tr></table></figure>
+<h5 id="1、版本提交历史记录git-log"><a href="#1、版本提交历史记录git-log" class="headerlink" title="1、版本提交历史记录git log"></a>1、版本提交历史记录<code>git log</code></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git log</span><br><span class="line"></span><br><span class="line">commit def33d73a1ded1b673f2b994bddedce9f8409a33</span><br><span class="line"></span><br><span class="line">Author: ZAntony &lt;zantony.top@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">Date:   Sun Dec 11 22:36:53 2016 +0800</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    New line 2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">commit a782d05f438ca21a2d2336e97256bf9d7e35c058</span><br><span class="line"></span><br><span class="line">Author: ZAntony &lt;zantony.top@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">Date:   Sun Dec 11 22:19:43 2016 +0800</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    add new line</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">commit ba4d5a316c0e915e768d0a793999ff9f5f41447b</span><br><span class="line"></span><br><span class="line">Author: ZAntony &lt;zantony.top@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">Date:   Sun Dec 11 22:00:13 2016 +0800</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    up a readme file</span><br></pre></td></tr></table></figure>
+<p>git 最近显示的是<code>New line 2</code>,上一次是<code>add new line</code>,第一次是<code>up a readme file</code></p>
+<p><strong>可以通过<code>--pretty=oneline</code>参数控制输出内容的数量</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git log --pretty=oneline</span><br><span class="line"></span><br><span class="line">def33d73a1ded1b673f2b994bddedce9f8409a33 New line 2</span><br><span class="line"></span><br><span class="line">a782d05f438ca21a2d2336e97256bf9d7e35c058 add new line</span><br><span class="line"></span><br><span class="line">ba4d5a316c0e915e768d0a793999ff9f5f41447b up a readme file</span><br></pre></td></tr></table></figure>
+<p><strong>前面的一串数字是16进制的commit id</strong></p>
+<h5 id="2、git-reset-版本回退"><a href="#2、git-reset-版本回退" class="headerlink" title="2、git reset 版本回退"></a>2、git reset 版本回退</h5><p>首先，Git必须知道当前版本是哪个版本，在Git中，用HEAD表示当前版本，也就是最新的提交def33d……..9a33（注意我的提交ID和你的肯定不一样），上一个版本就是<code>HEAD^</code>，上上一个版本就是<code>HEAD^^</code>，当然往上100个版本写100个^比较容易数不过来，所以写成<code>HEAD~100</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git reset --hard HEAD^</span><br><span class="line"></span><br><span class="line">HEAD is now at a782d05 add new line</span><br><span class="line"></span><br><span class="line">This is a test file</span><br><span class="line"></span><br><span class="line">Git is a opensource app</span><br><span class="line"></span><br><span class="line">New line</span><br><span class="line"></span><br><span class="line"># 此时版本已经回退</span><br></pre></td></tr></table></figure>
+<h5 id="3、当返回到上一个版本后，突然想返回到为返回前的版本，即New-line-2"><a href="#3、当返回到上一个版本后，突然想返回到为返回前的版本，即New-line-2" class="headerlink" title="3、当返回到上一个版本后，突然想返回到为返回前的版本，即New line 2"></a>3、当返回到上一个版本后，突然想返回到为返回前的版本，即<code>New line 2</code></h5><p>查看日志，发现并未找到回退前的版本的commit id</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git log</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">commit a782d05f438ca21a2d2336e97256bf9d7e35c058</span><br><span class="line"></span><br><span class="line">Author: ZAntony &lt;zantony.top@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">Date:   Sun Dec 11 22:19:43 2016 +0800</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    add new line</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">commit ba4d5a316c0e915e768d0a793999ff9f5f41447b</span><br><span class="line"></span><br><span class="line">Author: ZAntony &lt;zantony.top@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">Date:   Sun Dec 11 22:00:13 2016 +0800</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    up a readme file</span><br></pre></td></tr></table></figure>
+<h6 id="当通过git-reset-hard-HEAD-恢复到add-new-line时，在想恢复到之前的New-line-2-就必须找到他的commit-id，可以通过查看之前的命令历史来查找，也可以通过git-reflog来查看commit-id"><a href="#当通过git-reset-hard-HEAD-恢复到add-new-line时，在想恢复到之前的New-line-2-就必须找到他的commit-id，可以通过查看之前的命令历史来查找，也可以通过git-reflog来查看commit-id" class="headerlink" title="当通过git reset --hard HEAD^恢复到add new line时，在想恢复到之前的New line 2,就必须找到他的commit id，可以通过查看之前的命令历史来查找，也可以通过git reflog来查看commit id"></a>当通过<code>git reset --hard HEAD^</code>恢复到<code>add new line</code>时，在想恢复到之前的<code>New line 2</code>,就必须找到他的<code>commit id</code>，可以通过查看之前的命令历史来查找，也可以通过<code>git reflog</code>来查看commit id</h6><p><strong>git reflog</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git reflog # 通过命令来查看commit id，id是不完整的，但是可以使用，只要保证id唯一性。</span><br><span class="line"></span><br><span class="line">a782d05 HEAD@&#123;0&#125;: reset: moving to HEAD^</span><br><span class="line"></span><br><span class="line">def33d7 HEAD@&#123;1&#125;: commit: New line 2</span><br><span class="line"></span><br><span class="line">a782d05 HEAD@&#123;2&#125;: commit: add new line</span><br><span class="line"></span><br><span class="line">ba4d5a3 HEAD@&#123;3&#125;: commit (initial): up a readme file</span><br></pre></td></tr></table></figure>
+<p><strong>恢复版本</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ git reset --hard def33d7</span><br><span class="line"></span><br><span class="line">HEAD is now at def33d7 New line 2</span><br><span class="line"></span><br><span class="line">$ cat readme.txt</span><br><span class="line"></span><br><span class="line">This is a test file</span><br><span class="line"></span><br><span class="line">Git is a opensource app</span><br><span class="line"></span><br><span class="line">New line</span><br><span class="line"></span><br><span class="line">New line 2</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="3Golds 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="3Golds 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/git/" rel="tag"># git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/21/2017-01-22-Useradd-sh/" rel="prev" title="添加一个用户sudo权限的使用密钥登录的用户">
+                添加一个用户sudo权限的使用密钥登录的用户 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/gophers.jpg"
+                alt="3Golds" />
+            
+              <p class="site-author-name" itemprop="name">3Golds</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/3Golds" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:go80800@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、git-install"><span class="nav-number">1.</span> <span class="nav-text">一、git install</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、git-initialization-configure"><span class="nav-number">2.</span> <span class="nav-text">二、git initialization configure</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#注意git-config命令的-global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">注意git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然也可以对某个仓库指定不同的用户名和Email地址</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、git-create-repository"><span class="nav-number">3.</span> <span class="nav-text">三、git create repository</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、创建一个目录"><span class="nav-number">3.0.1.</span> <span class="nav-text">1、创建一个目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、通过-git-init-命令把这个目录变成Git可以管理的仓库"><span class="nav-number">3.0.2.</span> <span class="nav-text">2、通过 git init 命令把这个目录变成Git可以管理的仓库</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、提交一个文件到仓库"><span class="nav-number">4.</span> <span class="nav-text">四、提交一个文件到仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、创建一个文件"><span class="nav-number">4.0.1.</span> <span class="nav-text">1、创建一个文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、用命令git-add将文件添加到仓库"><span class="nav-number">4.0.2.</span> <span class="nav-text">2、用命令git add将文件添加到仓库</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、用命令git-commit告诉Git，把文件提交到git仓库"><span class="nav-number">4.0.3.</span> <span class="nav-text">3、用命令git commit告诉Git，把文件提交到git仓库</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、Git-Status、diff（状态、对比）"><span class="nav-number">5.</span> <span class="nav-text">五、Git Status、diff（状态、对比）</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、Status"><span class="nav-number">5.0.1.</span> <span class="nav-text">1、Status</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、diff（查看具体修改内容）"><span class="nav-number">5.0.2.</span> <span class="nav-text">2、diff（查看具体修改内容）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、查看add及commit后的状态"><span class="nav-number">5.0.3.</span> <span class="nav-text">3、查看add及commit后的状态</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、版本回退"><span class="nav-number">6.</span> <span class="nav-text">六、版本回退</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、版本提交历史记录git-log"><span class="nav-number">6.0.1.</span> <span class="nav-text">1、版本提交历史记录git log</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、git-reset-版本回退"><span class="nav-number">6.0.2.</span> <span class="nav-text">2、git reset 版本回退</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、当返回到上一个版本后，突然想返回到为返回前的版本，即New-line-2"><span class="nav-number">6.0.3.</span> <span class="nav-text">3、当返回到上一个版本后，突然想返回到为返回前的版本，即New line 2</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#当通过git-reset-hard-HEAD-恢复到add-new-line时，在想恢复到之前的New-line-2-就必须找到他的commit-id，可以通过查看之前的命令历史来查找，也可以通过git-reflog来查看commit-id"><span class="nav-number">6.0.3.1.</span> <span class="nav-text">当通过git reset --hard HEAD^恢复到add new line时，在想恢复到之前的New line 2,就必须找到他的commit id，可以通过查看之前的命令历史来查找，也可以通过git reflog来查看commit id</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">3Golds</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2159314"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bK3mQMcoKlwuLljKCOH5tsP1-gzGzoHsz", "343DJUSwdwM3miekBuwdNf24");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({});</script></body>
+</html>

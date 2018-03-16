@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.jpg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Gitlab," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、Gitlab简介 组件说明  前端：Nginx，用于页面及Git tool走http或https协议  后端：Gitlab服务，采用Ruby on Rails框架，通过unicorn实现后台服务及多进程  SSHD：开启sshd服务，用于用户上传ssh key进行版本克隆及上传。注：用户上传的ssh key是保存到git账户中  数据库：目前仅支持MySQL和PostgreSQL  Redis">
+<meta name="keywords" content="Gitlab">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gitlab-Omnibus">
+<meta property="og:url" content="http://zhaodaxin.com/2017/02/04/2017-01-23-Gitlab-Omnibus/index.html">
+<meta property="og:site_name" content="3Golds">
+<meta property="og:description" content="一、Gitlab简介 组件说明  前端：Nginx，用于页面及Git tool走http或https协议  后端：Gitlab服务，采用Ruby on Rails框架，通过unicorn实现后台服务及多进程  SSHD：开启sshd服务，用于用户上传ssh key进行版本克隆及上传。注：用户上传的ssh key是保存到git账户中  数据库：目前仅支持MySQL和PostgreSQL  Redis">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://obbogqhb1.bkt.clouddn.com/Gitlab1.png">
+<meta property="og:image" content="http://obbogqhb1.bkt.clouddn.com/gitlab2.png">
+<meta property="og:image" content="http://obbogqhb1.bkt.clouddn.com/gitlab3.png">
+<meta property="og:image" content="http://obbogqhb1.bkt.clouddn.com/gitlab4.png">
+<meta property="og:updated_time" content="2018-03-16T08:50:33.807Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gitlab-Omnibus">
+<meta name="twitter:description" content="一、Gitlab简介 组件说明  前端：Nginx，用于页面及Git tool走http或https协议  后端：Gitlab服务，采用Ruby on Rails框架，通过unicorn实现后台服务及多进程  SSHD：开启sshd服务，用于用户上传ssh key进行版本克隆及上传。注：用户上传的ssh key是保存到git账户中  数据库：目前仅支持MySQL和PostgreSQL  Redis">
+<meta name="twitter:image" content="http://obbogqhb1.bkt.clouddn.com/Gitlab1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhaodaxin.com/2017/02/04/2017-01-23-Gitlab-Omnibus/"/>
+
+
+
+
+
+  <title>Gitlab-Omnibus | 3Golds</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">3Golds</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ThreeGold</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhaodaxin.com/2017/02/04/2017-01-23-Gitlab-Omnibus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="3Golds">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/gophers.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="3Golds">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Gitlab-Omnibus</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-04T00:00:00+08:00">
+                2017-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/02/04/2017-01-23-Gitlab-Omnibus/" class="leancloud_visitors" data-flag-title="Gitlab-Omnibus">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,240
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、Gitlab简介"><a href="#一、Gitlab简介" class="headerlink" title="一、Gitlab简介"></a>一、Gitlab简介</h3><p><img src="http://obbogqhb1.bkt.clouddn.com/Gitlab1.png" alt="Gitlab1.png"></p>
+<p><strong>组件说明</strong></p>
+<ul>
+<li><p><strong>前端</strong>：Nginx，用于页面及Git tool走http或https协议</p>
+</li>
+<li><p><strong>后端</strong>：Gitlab服务，采用Ruby on Rails框架，通过unicorn实现后台服务及多进程</p>
+</li>
+<li><p><strong>SSHD</strong>：开启sshd服务，用于用户上传ssh key进行版本克隆及上传。注：用户上传的ssh key是保存到git账户中</p>
+</li>
+<li><p><strong>数据库</strong>：目前仅支持MySQL和PostgreSQL</p>
+</li>
+<li><p><strong>Redis</strong>：用于存储用户session和任务，任务包括新建仓库、发送邮件等等</p>
+</li>
+<li><p><strong>Sidekiq</strong>：Rails框架自带的，订阅redis中的任务并执行</p>
+</li>
+</ul>
+<p><strong>版本说明</strong></p>
+<ul>
+<li><p><strong>CE(GitLab Community Edition)</strong>：社区版(源码安装方式) <a href="https://docs.gitlab.com/ce/README.html" target="_blank" rel="noopener">https://docs.gitlab.com/ce/README.html</a></p>
+</li>
+<li><p><strong>OM(Omnibus GitLab)</strong>：综合版(包安装方式) <a href="https://docs.gitlab.com/omnibus/README.html" target="_blank" rel="noopener">https://docs.gitlab.com/omnibus/README.html</a></p>
+</li>
+<li><p><strong>EE(GitLab Enterprise Edition)</strong>：企业版 <a href="https://docs.gitlab.com/ee/README.html" target="_blank" rel="noopener">https://docs.gitlab.com/ee/README.html</a></p>
+</li>
+</ul>
+<h3 id="二、Gitlab-Omnibus-安装和配置"><a href="#二、Gitlab-Omnibus-安装和配置" class="headerlink" title="二、Gitlab Omnibus 安装和配置"></a>二、Gitlab Omnibus 安装和配置</h3><p><strong>1. 安装和配置依赖环境</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install curl openssh-server ca-certificates postfix</span><br></pre></td></tr></table></figure>
+<p><strong>2. 添加gitlab 包并安装</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | sudo bash</span><br><span class="line">sudo apt-get install gitlab-ce</span><br></pre></td></tr></table></figure>
+<p>如果安装很慢，可以选择下载程序包后安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://packages.gitlab.com/gitlab/gitlab-ce/install</span><br></pre></td></tr></table></figure>
+<p><strong>3. 配置gitlab</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+<p><strong>4.配置Nginx</strong></p>
+<p><a href="https://docs.gitlab.com/omnibus/settings/nginx.html" target="_blank" rel="noopener">https://docs.gitlab.com/omnibus/settings/nginx.html</a></p>
+<p><code>配置https</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p /etc/gitlab/ssl</span><br><span class="line"></span><br><span class="line">$ chmod 700 /etc/gitlab/ssl</span><br><span class="line"></span><br><span class="line">$ cp /etc/gitlab/ssl/* /etc/gitlab/trusted-certs/ # 注意：ssl下面的是证书文件</span><br><span class="line"></span><br><span class="line">$ vim /etc/gitlab/gitlab.rb</span><br><span class="line"></span><br><span class="line">external_url &quot;https://git.xxx.com&quot;</span><br><span class="line"></span><br><span class="line">nginx[&apos;redirect_http_to_https&apos;] = true</span><br><span class="line"></span><br><span class="line">nginx[&apos;ssl_certificate&apos;] = &quot;/etc/gitlab/ssl/xxx.com.chain.crt&quot;</span><br><span class="line"></span><br><span class="line">nginx[&apos;ssl_certificate_key&apos;] = &quot;/etc/gitlab/ssl/xxx.com.key&quot;</span><br><span class="line"></span><br><span class="line"> nginx[&apos;proxy_set_headers&apos;] = &#123;</span><br><span class="line"></span><br><span class="line">  &quot;X-Forwarded-Proto&quot; =&gt; &quot;http&quot;,</span><br><span class="line"></span><br><span class="line">  &quot;CUSTOM_HEADER&quot; =&gt; &quot;VALUE&quot;</span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>5.配置LDAP</strong></p>
+<p>参考配置：<a href="https://docs.gitlab.com/ce/administration/auth/ldap.html" target="_blank" rel="noopener">https://docs.gitlab.com/ce/administration/auth/ldap.html</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">gitlab_rails[&apos;ldap_enabled&apos;] = true</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;ldap_servers&apos;] = YAML.load &lt;&lt;-&apos;EOS&apos; # remember to close this block with &apos;EOS&apos; below</span><br><span class="line"></span><br><span class="line">  main: # &apos;main&apos; is the GitLab &apos;provider ID&apos; of this LDAP server</span><br><span class="line"></span><br><span class="line">     label: &apos;xxx-ldap&apos;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">     host: &apos;LDAP_HOST&apos;</span><br><span class="line"></span><br><span class="line">     port: 389</span><br><span class="line"></span><br><span class="line">     uid: &apos;uid&apos;</span><br><span class="line"></span><br><span class="line">     bind_dn: &apos;cn=Directory Manager&apos;</span><br><span class="line"></span><br><span class="line">     password: &apos;PASSWORD&apos;</span><br><span class="line"></span><br><span class="line">     base: &apos;ou=People,dc=xxx,dc=com&apos;</span><br><span class="line"></span><br><span class="line">     active_directory: false</span><br><span class="line"></span><br><span class="line">     method: &apos;plain&apos; # &quot;tls&quot; or &quot;ssl&quot; or &quot;plain&quot;</span><br><span class="line"></span><br><span class="line">     user_filter: &apos;(objectClass=xxx-ldap)&apos;</span><br><span class="line"></span><br><span class="line">EOS</span><br></pre></td></tr></table></figure>
+<p><strong>6.配置EMAIL</strong></p>
+<p>参考配置：<a href="https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/smtp.md" target="_blank" rel="noopener">https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/smtp.md</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo vim /etc/gitlab/gitlab.rb</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;smtp_enable&apos;] = true</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;smtp_address&apos;] = &quot;Your_EMAIL_SERVER_ADDRESS&quot;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;smtp_port&apos;] = 25</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;smtp_user_name&apos;] = &quot;EMAIL_SERVER_USER&quot;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;smtp_password&apos;] = &quot;EMAIL_SERVER_PASSWORD&quot;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;smtp_authentication&apos;] = &quot;login&quot;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;gitlab_email_from&apos;] = &apos;xxx@xx.com&apos;</span><br></pre></td></tr></table></figure>
+<p><strong>7.重新加载配置</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+<p><strong>Testing the SMTP configuration</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo gitlab-rails console</span><br><span class="line"></span><br><span class="line">irb(main):003:0&gt; Notify.test_email(&apos;destination_email@address.com&apos;, &apos;Message Subject&apos;, &apos;Message Body&apos;).deliver_now</span><br></pre></td></tr></table></figure>
+<h3 id="三、Gitlab-备份及恢复"><a href="#三、Gitlab-备份及恢复" class="headerlink" title="三、Gitlab 备份及恢复"></a>三、Gitlab 备份及恢复</h3><p><code>backup</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo gitlab-rake gitlab:backup:create</span><br><span class="line"></span><br><span class="line">可选参数：SKIP=db,upload 或者SKIP=db或者SKIP=upload</span><br></pre></td></tr></table></figure>
+<p><code>resotre</code></p>
+<p><strong>a. 停止服务</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo cp 1393513186_gitlab_backup.tar /var/opt/gitlab/backups/</span><br><span class="line"></span><br><span class="line">sudo gitlab-ctl stop unicorn</span><br><span class="line"></span><br><span class="line">sudo gitlab-ctl stop sidekiq</span><br></pre></td></tr></table></figure>
+<p><strong>b.查看其状态</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo gitlab-ctl status</span><br></pre></td></tr></table></figure>
+<p><strong>c.还原</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo gitlab-rake gitlab:backup:restore BACKUP=1393513186_2014_02_27</span><br><span class="line"></span><br><span class="line"> 可选参数</span><br><span class="line"></span><br><span class="line"> $ sudo gitlab-rake gitlab:backup:restore SKIP=db,upload BACKUP=1342713186_2014_02_27</span><br></pre></td></tr></table></figure>
+<p><strong>d. 重启并检查</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">sudo gitlab-ctl start </span><br><span class="line"></span><br><span class="line">sudo gitlab-rake gitlab:check SANITIZE=true</span><br></pre></td></tr></table></figure>
+<h3 id="四、禁用Gitlab-nginx使用production-nginx"><a href="#四、禁用Gitlab-nginx使用production-nginx" class="headerlink" title="四、禁用Gitlab nginx使用production-nginx"></a>四、禁用Gitlab nginx使用production-nginx</h3><p><strong>禁用gitlab nginx</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">vim /etc/gitlab/gitlab.rb</span><br><span class="line"></span><br><span class="line">nginx[&apos;enable&apos;] = false</span><br></pre></td></tr></table></figure>
+<p><strong>重新配置gitlab</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+<p><strong>使用production配置</strong><br><code>建议：将/var/opt/gitlab/nginx/conf下面的配置文件直接复制过来，稍作修改即可</code><br>参考配置：<a href="http://docs.gitlab.com/omnibus/settings/nginx.html" target="_blank" rel="noopener">http://docs.gitlab.com/omnibus/settings/nginx.html</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#注意：拷贝前备份</span><br><span class="line">cp /var/opt/gitlab/ngin/conf/* /usr/local/nginx/conf/</span><br></pre></td></tr></table></figure>
+<h3 id="五、禁用Gitlab-postgresql使用production-pgsql"><a href="#五、禁用Gitlab-postgresql使用production-pgsql" class="headerlink" title="五、禁用Gitlab postgresql使用production-pgsql"></a>五、禁用Gitlab postgresql使用production-pgsql</h3><p><strong>1.禁用Gitlab postgresql</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim /etc/gitlab/gitlab.rb</span><br><span class="line"></span><br><span class="line">postgresql[&apos;enable&apos;] = false</span><br></pre></td></tr></table></figure>
+<p><strong>2.导入Gitlab 备份sql到production postgresql</strong></p>
+<p>连接数据库并创建(注意，在最后创建数据库的时候，如果出现报错，请使用gitlab用户登录并创建)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ psql -U PSQL_USER -h PSQL_HOST -p 5432 -d template1</span><br><span class="line"></span><br><span class="line">template1 &gt; CREATE USER gitlab CREATEDB WITH PASSWORD &apos;PASSWORD&apos;;</span><br><span class="line"></span><br><span class="line">template1 &gt; CREATE EXTENSION IF NOT EXISTS pg_trgm;</span><br><span class="line"></span><br><span class="line">template1 &gt; CREATE DATABASE gitlabhq_production OWNER gitlab</span><br><span class="line"></span><br><span class="line"># 导入备份文件</span><br><span class="line"></span><br><span class="line">psql -U PSQL_USER -h PSQL_HOST -p 5432 -d DATABASE &lt; SQL_FILE</span><br></pre></td></tr></table></figure>
+<p><strong>3.修改gitlab配置，添加production</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/gitlab/gitlab.rb</span><br><span class="line">gitlab_rails[&apos;db_adapter&apos;] = &quot;postgresql&quot;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;db_encoding&apos;] = &apos;utf8&apos;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;db_host&apos;] = &apos;HOST&apos;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;db_port&apos;] = &apos;5432&apos;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;db_username&apos;] = &apos;User_Name&apos;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;db_password&apos;] = &apos;Password&apos;</span><br></pre></td></tr></table></figure>
+<p><strong>4.重新配置Gitlab</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">gitlab-ct reconfigure</span><br></pre></td></tr></table></figure>
+<h3 id="六、禁用Gitlab-Redis使用production-Redis"><a href="#六、禁用Gitlab-Redis使用production-Redis" class="headerlink" title="六、禁用Gitlab Redis使用production Redis"></a>六、禁用Gitlab Redis使用production Redis</h3><p><strong>配置gitlab</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/gitlab/gitlab.rb</span><br><span class="line"></span><br><span class="line">redis[&apos;enable&apos;] = false</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;redis_host&apos;] = &apos;REDIS_HOST&apos;</span><br><span class="line"></span><br><span class="line">gitlab_rails[&apos;redis_port&apos;] = 6379</span><br></pre></td></tr></table></figure>
+<p><strong>备份本地redis</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h localhost -p 6379</span><br><span class="line"></span><br><span class="line">redis 127.0.0.1:6379 &gt; SAVE</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">该命令将在 redis 安装目录中创建dump.rdb文件。</span><br></pre></td></tr></table></figure>
+<p><strong>恢复数据到production</strong></p>
+<p>只需将备份文件 (dump.rdb) 移动到 redis 安装目录并启动服务即可,获取 redis 目录可以使用 CONFIG 命令，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">redis 127.0.0.1:6379&gt; CONFIG GET dir</span><br><span class="line"></span><br><span class="line">1) &quot;dir&quot;</span><br><span class="line"></span><br><span class="line">2) &quot;/usr/local/redis/bin&quot;</span><br><span class="line"></span><br><span class="line">以上命令 CONFIG GET dir 输出的 redis 安装目录为 /usr/local/redis/bin。</span><br></pre></td></tr></table></figure>
+<p><strong>如果还原的redis在Aws的ElastiCache</strong></p>
+<p>在ElastiCache控制面板配置redis(<a href="https://console.amazonaws.cn/elasticache" target="_blank" rel="noopener">https://console.amazonaws.cn/elasticache</a>)</p>
+<h5 id="1-创建redis集群"><a href="#1-创建redis集群" class="headerlink" title="1.创建redis集群"></a>1.创建redis集群</h5><p><img src="http://obbogqhb1.bkt.clouddn.com/gitlab2.png" alt="gitlab2.png"></p>
+<h5 id="2-配置基本配置"><a href="#2-配置基本配置" class="headerlink" title="2.配置基本配置"></a>2.配置基本配置</h5><p><img src="http://obbogqhb1.bkt.clouddn.com/gitlab3.png" alt="gitlab3.png"></p>
+<h5 id="3-配置高级配置"><a href="#3-配置高级配置" class="headerlink" title="3.配置高级配置"></a>3.配置高级配置</h5><p><img src="http://obbogqhb1.bkt.clouddn.com/gitlab4.png" alt="gitlab4.png"></p>
+<h5 id="4-等待创建完成后重新配置Gitlab"><a href="#4-等待创建完成后重新配置Gitlab" class="headerlink" title="4. 等待创建完成后重新配置Gitlab"></a>4. 等待创建完成后重新配置Gitlab</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="3Golds 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="3Golds 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Gitlab/" rel="tag"># Gitlab</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/23/2017-01-23-Ruby环境那些坑/" rel="next" title="Ruby 环境那些坑">
+                <i class="fa fa-chevron-left"></i> Ruby 环境那些坑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/08/2017-02-08-Yahoo-screwdriver-开源了/" rel="prev" title="Yahoo-screwdriver开源了">
+                Yahoo-screwdriver开源了 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/gophers.jpg"
+                alt="3Golds" />
+            
+              <p class="site-author-name" itemprop="name">3Golds</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/3Golds" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:go80800@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Gitlab简介"><span class="nav-number">1.</span> <span class="nav-text">一、Gitlab简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、Gitlab-Omnibus-安装和配置"><span class="nav-number">2.</span> <span class="nav-text">二、Gitlab Omnibus 安装和配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、Gitlab-备份及恢复"><span class="nav-number">3.</span> <span class="nav-text">三、Gitlab 备份及恢复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、禁用Gitlab-nginx使用production-nginx"><span class="nav-number">4.</span> <span class="nav-text">四、禁用Gitlab nginx使用production-nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、禁用Gitlab-postgresql使用production-pgsql"><span class="nav-number">5.</span> <span class="nav-text">五、禁用Gitlab postgresql使用production-pgsql</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#六、禁用Gitlab-Redis使用production-Redis"><span class="nav-number">6.</span> <span class="nav-text">六、禁用Gitlab Redis使用production Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-创建redis集群"><span class="nav-number">6.0.1.</span> <span class="nav-text">1.创建redis集群</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-配置基本配置"><span class="nav-number">6.0.2.</span> <span class="nav-text">2.配置基本配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-配置高级配置"><span class="nav-number">6.0.3.</span> <span class="nav-text">3.配置高级配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-等待创建完成后重新配置Gitlab"><span class="nav-number">6.0.4.</span> <span class="nav-text">4. 等待创建完成后重新配置Gitlab</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">3Golds</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2159314"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bK3mQMcoKlwuLljKCOH5tsP1-gzGzoHsz", "343DJUSwdwM3miekBuwdNf24");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({});</script></body>
+</html>

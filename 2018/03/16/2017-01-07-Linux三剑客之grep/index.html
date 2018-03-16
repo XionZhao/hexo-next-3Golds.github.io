@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.jpg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="linux, grep, awk, sed" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Linux三剑客">
+<meta name="keywords" content="linux, grep, awk, sed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux三剑客之grep">
+<meta property="og:url" content="http://zhaodaxin.com/2018/03/16/2017-01-07-Linux三剑客之grep/index.html">
+<meta property="og:site_name" content="3Golds">
+<meta property="og:description" content="Linux三剑客">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://zantony.top/uploads/grep.png">
+<meta property="og:updated_time" content="2018-03-16T08:50:33.800Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux三剑客之grep">
+<meta name="twitter:description" content="Linux三剑客">
+<meta name="twitter:image" content="http://zantony.top/uploads/grep.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhaodaxin.com/2018/03/16/2017-01-07-Linux三剑客之grep/"/>
+
+
+
+
+
+  <title>Linux三剑客之grep | 3Golds</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">3Golds</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ThreeGold</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhaodaxin.com/2018/03/16/2017-01-07-Linux三剑客之grep/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="3Golds">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/gophers.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="3Golds">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux三剑客之grep</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T16:50:33+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/16/2017-01-07-Linux三剑客之grep/" class="leancloud_visitors" data-flag-title="Linux三剑客之grep">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,819
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  Linux三剑客
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、Linux文本处理三剑客"><a href="#一、Linux文本处理三剑客" class="headerlink" title="一、Linux文本处理三剑客"></a>一、Linux文本处理三剑客</h3><blockquote>
+<p>Linux上有三种常用的文本处理工具，分别为：grep（egrep、fgrep）、sed、awk。今天主要给大家介绍一下三剑客中的第一剑：grep伐木累。</p>
+</blockquote>
+<h3 id="二、grep是什么？"><a href="#二、grep是什么？" class="headerlink" title="二、grep是什么？"></a>二、grep是什么？</h3><blockquote>
+<p><code>grep</code> 全称（Globally search a Regular Expression and Print）是一个文本搜索工具，基于“pattern”（这里指的是过滤模式，多指正则表达式）对给定的文本进行搜索。</p>
+</blockquote>
+<blockquote>
+<p>grep家族：<br>        1.grep：支持使用基本正则表达式；<br>        2.egrep：支持使用扩展正则表达式；<br>        3.fgrep：不支持使用正则表达式；</p>
+</blockquote>
+<pre><code># 虽然正则表达式有强大的引擎，但是在单独过滤字符上面 fgrep要起到很大作用，这个作用在日志文件小的时候可能体现不出来，但是当文件达到几亿行就能体现出fgrep的搜索效率。（对大型web网站一天的日志量到几亿行是很轻松的，甚至更多）
+</code></pre><h3 id="三、grep与egrep的主要参数"><a href="#三、grep与egrep的主要参数" class="headerlink" title="三、grep与egrep的主要参数"></a>三、grep与egrep的主要参数</h3><p>在介绍正则表达式前，先介绍一下grep的常用参数，这里所有涉及正则表达式meta字符都会在后续中展开！<br>常用选项：<br>–color=auto：对匹配到的文本着色后高亮显示；（默认centos7对grep、egrep、fgrep已经设置参数，此处不做过多例子）</p>
+<h4 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">alias cp=&apos;cp -i&apos;</span><br><span class="line">alias egrep=&apos;egrep --color=auto&apos;</span><br><span class="line">alias fgrep=&apos;fgrep --color=auto&apos;</span><br><span class="line">alias grep=&apos;grep --color=auto&apos;</span><br><span class="line">alias l.=&apos;ls -d .* --color=auto&apos;</span><br><span class="line">alias ll=&apos;ls -l --color=auto&apos;</span><br><span class="line">alias ls=&apos;ls --color=auto&apos;</span><br><span class="line">alias mv=&apos;mv -i&apos;</span><br><span class="line">alias rm=&apos;rm -i&apos;</span><br><span class="line">alias which=&apos;alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde&apos;</span><br></pre></td></tr></table></figure>
+<h4 id="i：忽略字符大小写；"><a href="#i：忽略字符大小写；" class="headerlink" title="-i：忽略字符大小写；"></a>-i：忽略字符大小写；</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># cat test</span><br><span class="line">Hello World</span><br><span class="line">How are you?</span><br><span class="line">Mageedu is very good!</span><br><span class="line"># grep &quot;^H&quot; test</span><br><span class="line">Hello World</span><br><span class="line">How are you?</span><br><span class="line"># grep &quot;^h&quot; test</span><br><span class="line"># grep -i &quot;^h&quot; test</span><br><span class="line">Hello World</span><br><span class="line">How are you?</span><br></pre></td></tr></table></figure>
+<h4 id="o：仅显示匹配-到的文本自身；"><a href="#o：仅显示匹配-到的文本自身；" class="headerlink" title="-o：仅显示匹配 到的文本自身；"></a>-o：仅显示匹配 到的文本自身；</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;good&quot; test</span><br><span class="line">Mageedu is very good!</span><br><span class="line">[root@localhost ~]# grep -o &quot;good&quot; test</span><br><span class="line">good</span><br><span class="line">-v，反向匹配；</span><br><span class="line"># cat test</span><br><span class="line">Hello World</span><br><span class="line">How are you?</span><br><span class="line">Mageedu is very good!</span><br><span class="line">[root@localhost ~]# grep  &quot;M.*[[:punct:]]$&quot; test</span><br><span class="line">Mageedu is very good!</span><br><span class="line">[root@localhost ~]# grep -v &quot;M.*[[:punct:]]$&quot; test</span><br><span class="line">Hello World</span><br><span class="line">How are you?</span><br></pre></td></tr></table></figure>
+<h4 id="q-静默模式，不输出任何信息；（省得把输出放到-dev-null，节省系统资源）"><a href="#q-静默模式，不输出任何信息；（省得把输出放到-dev-null，节省系统资源）" class="headerlink" title="-q, 静默模式，不输出任何信息；（省得把输出放到/dev/null，节省系统资源）"></a>-q, 静默模式，不输出任何信息；（省得把输出放到/dev/null，节省系统资源）</h4><p>此处只是为了得到一个返回状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># grep -q &quot;good&quot; test</span><br><span class="line"># echo $?</span><br><span class="line">0</span><br><span class="line"># grep -q &quot;goodddddddd&quot; test</span><br><span class="line"># echo $?</span><br><span class="line">1</span><br></pre></td></tr></table></figure></p>
+<h4 id="P-支持使用pcre正则表达式（per语言）；"><a href="#P-支持使用pcre正则表达式（per语言）；" class="headerlink" title="-P, 支持使用pcre正则表达式（per语言）；"></a>-P, 支持使用pcre正则表达式（per语言）；</h4><h4 id="e-PATTERN可以同时匹配多个模式"><a href="#e-PATTERN可以同时匹配多个模式" class="headerlink" title="-e PATTERN可以同时匹配多个模式"></a>-e PATTERN可以同时匹配多个模式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># cat test</span><br><span class="line">Hello World</span><br><span class="line">How are you?</span><br><span class="line">Mageedu is very good!</span><br><span class="line">[root@localhost ~]# grep -e &quot;good&quot; -e &quot;you&quot; test</span><br><span class="line">How are you?</span><br><span class="line">Mageedu is very good!</span><br></pre></td></tr></table></figure>
+<h4 id="f-FILEFILE为每行包含了一个pattern的文本文件，即grep-script；（读取文件中的每一行pattern来对指定FILE进行过滤）"><a href="#f-FILEFILE为每行包含了一个pattern的文本文件，即grep-script；（读取文件中的每一行pattern来对指定FILE进行过滤）" class="headerlink" title="-f FILEFILE为每行包含了一个pattern的文本文件，即grep script；（读取文件中的每一行pattern来对指定FILE进行过滤）"></a>-f FILEFILE为每行包含了一个pattern的文本文件，即grep script；（读取文件中的每一行pattern来对指定FILE进行过滤）</h4><p>-f与-e类似，都是匹配多个模式，只是-f选项读取的是文本文件中的模式，逐行匹配。</p>
+<h4 id="A-NUM-显示匹配出的后-行"><a href="#A-NUM-显示匹配出的后-行" class="headerlink" title="-A NUM 显示匹配出的后#行"></a>-A NUM 显示匹配出的后#行</h4><h4 id="B-NUM-显示匹配出的前-行"><a href="#B-NUM-显示匹配出的前-行" class="headerlink" title="-B NUM 显示匹配出的前#行"></a>-B NUM 显示匹配出的前#行</h4><h4 id="C-NUM显示匹配出的前后-行"><a href="#C-NUM显示匹配出的前后-行" class="headerlink" title="-C NUM显示匹配出的前后#行"></a>-C NUM显示匹配出的前后#行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># cat test</span><br><span class="line">Hello World</span><br><span class="line">How are you?</span><br><span class="line">Mageedu is very good!</span><br><span class="line"># grep -A 1 &quot;you&quot; test</span><br><span class="line">How are you?</span><br><span class="line">Mageedu is very good!</span><br><span class="line"># grep -B 1 &quot;you&quot; test</span><br><span class="line">Hello World</span><br><span class="line">How are you?</span><br><span class="line"># grep -C 1 &quot;you&quot; test</span><br><span class="line">Hello World</span><br><span class="line">How are you?</span><br><span class="line">Mageedu is very good!</span><br></pre></td></tr></table></figure>
+<h4 id="其他参数"><a href="#其他参数" class="headerlink" title="其他参数"></a>其他参数</h4><p>下面参数针对grep命令而言：<br>-E：支持扩展的正则表达式相当与egrep；<br>-F, –fixed-strings：支持使用固定字符串，不支持正则表达式，相当于fgrep；</p>
+<h3 id="四、grep使用及正则表达式"><a href="#四、grep使用及正则表达式" class="headerlink" title="四、grep使用及正则表达式"></a>四、grep使用及正则表达式</h3><h4 id="1-正则表达式的组成"><a href="#1-正则表达式的组成" class="headerlink" title="1.正则表达式的组成"></a>1.正则表达式的组成</h4><p>a、一般字符：没有特殊意义的字符<br>b、特殊字符（meta字符）：元字符，有在正则表达式中有特殊意义</p>
+<h4 id="2-下面讲下正则表达式中常见的meta字符-元字符"><a href="#2-下面讲下正则表达式中常见的meta字符-元字符" class="headerlink" title="2.下面讲下正则表达式中常见的meta字符(元字符)"></a>2.下面讲下正则表达式中常见的meta字符(元字符)</h4><h5 id="a、基本正则表达式meta字符"><a href="#a、基本正则表达式meta字符" class="headerlink" title="a、基本正则表达式meta字符"></a>a、基本正则表达式meta字符</h5><h5 id="（1）字符匹配"><a href="#（1）字符匹配" class="headerlink" title="（1）字符匹配"></a>（1）字符匹配</h5><h6 id="“-”-匹配任意单个字符；"><a href="#“-”-匹配任意单个字符；" class="headerlink" title="“.”:匹配任意单个字符；"></a>“.”:匹配任意单个字符；</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># grep r..t /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line">ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin</span><br></pre></td></tr></table></figure>
+<h6 id="匹配方位内的任意单个数字；"><a href="#匹配方位内的任意单个数字；" class="headerlink" title="[ ]:匹配方位内的任意单个数字；"></a>[ ]:匹配方位内的任意单个数字；</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># fdisk -l |grep &quot;[sh]d[a-z]\&gt;&quot;</span><br><span class="line">Disk /dev/sda: 128.8 GB, 128849018880 bytes, 251658240 sectors</span><br></pre></td></tr></table></figure>
+<h6 id="匹配范围外的任意单个数字：托字符指取反之意-下面会讲到"><a href="#匹配范围外的任意单个数字：托字符指取反之意-下面会讲到" class="headerlink" title="[^]匹配范围外的任意单个数字：托字符指取反之意,下面会讲到"></a>[^]匹配范围外的任意单个数字：托字符指取反之意,下面会讲到</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># cat test</span><br><span class="line">Hello World</span><br><span class="line">how are you?</span><br><span class="line">Mageedu is very good!</span><br></pre></td></tr></table></figure>
+<h6 id="upper-：所有大写字母"><a href="#upper-：所有大写字母" class="headerlink" title="[[:upper:]]：所有大写字母"></a>[[:upper:]]：所有大写字母</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;^[^[:upper:]]&quot; test</span><br><span class="line">how are you?</span><br></pre></td></tr></table></figure>
+<h6 id="其他表示数字的元字符"><a href="#其他表示数字的元字符" class="headerlink" title="其他表示数字的元字符"></a>其他表示数字的元字符</h6><p>[[:upper:]]：所有大写字母；<br>[[:lower:]]：所有小写字母；<br>[[:digit:]]：所有的数字；<br>[[:alpha:]]：所有字母；<br>[[:alnum:]]：所有字母和数字；<br>[[:space:]]：空白字符；<br>[[:punct:]]：标点符号；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># cat test</span><br><span class="line">Hello World</span><br><span class="line">how are you?</span><br><span class="line">Mageedu is very good!</span><br><span class="line"># grep &quot;[[:upper:]][[:lower:]].*[[:space:]]&quot; test</span><br><span class="line">Hello World</span><br><span class="line">Mageedu is very good!</span><br></pre></td></tr></table></figure></p>
+<h6 id="（2）匹配次数"><a href="#（2）匹配次数" class="headerlink" title="（2）匹配次数"></a>（2）匹配次数</h6><p>主要用于限制字符要出现的次数，一般放在出现的次数的字符后面。</p>
+<h6 id="：匹配前面的字符任意次（0-1或多次）；"><a href="#：匹配前面的字符任意次（0-1或多次）；" class="headerlink" title="*：匹配前面的字符任意次（0,1或多次）；"></a><code>*</code>：匹配前面的字符任意次（0,1或多次）；</h6><p>此处*表示前面的字符可以出现也可以不出现，所以将文件中所有的行都匹配出来了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;a*&quot; test1</span><br><span class="line">ab</span><br><span class="line">aaaabcd</span><br><span class="line">bcd</span><br><span class="line">cd</span><br><span class="line">axxxxxxxd</span><br></pre></td></tr></table></figure></p>
+<h6 id="：任意长度的任意字符（-为匹配单个字符，-为任意次）"><a href="#：任意长度的任意字符（-为匹配单个字符，-为任意次）" class="headerlink" title=".*：任意长度的任意字符（.为匹配单个字符，*为任意次）"></a><code>.*</code>：任意长度的任意字符（.为匹配单个字符，*为任意次）</h6><p>此处.表示匹配任意单个字符，所以在过滤时，文件中的a必须出现至少一次<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;a.*&quot; test1</span><br><span class="line">ab</span><br><span class="line">aaaabcd</span><br><span class="line">axxxxxxxd</span><br><span class="line">cccabbbd</span><br></pre></td></tr></table></figure></p>
+<h6 id="：匹配前面的字符至少1次；"><a href="#：匹配前面的字符至少1次；" class="headerlink" title="\+：匹配前面的字符至少1次；"></a><code>\+</code>：匹配前面的字符至少1次；</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;a\+&quot; test1</span><br><span class="line">ab</span><br><span class="line">aaaabcd</span><br><span class="line">axxxxxxxd</span><br><span class="line">cccabbbd</span><br></pre></td></tr></table></figure>
+<h6 id="：匹配前面的0次或1次，即前面的字符可有可无；"><a href="#：匹配前面的0次或1次，即前面的字符可有可无；" class="headerlink" title="\?：匹配前面的0次或1次，即前面的字符可有可无；"></a>\?：匹配前面的0次或1次，即前面的字符可有可无；</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;a\?&quot; test1</span><br><span class="line">ab</span><br><span class="line">aaaabcd</span><br><span class="line">bcd</span><br><span class="line">cd</span><br><span class="line">axxxxxxxd</span><br><span class="line">cccabbbd</span><br></pre></td></tr></table></figure>
+<h6 id="m-：固定匹配前面的字符出现m次，m为非负数；"><a href="#m-：固定匹配前面的字符出现m次，m为非负数；" class="headerlink" title="{\m}：固定匹配前面的字符出现m次，m为非负数；"></a>{\m}：固定匹配前面的字符出现m次，m为非负数；</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;a\&#123;2\&#125;&quot; test1</span><br><span class="line">aaaabcd</span><br><span class="line">aaxxxxxxxd</span><br><span class="line">cccaabbbd</span><br></pre></td></tr></table></figure>
+<h6 id="m-n-至少出现m次，至多出现n次；"><a href="#m-n-至少出现m次，至多出现n次；" class="headerlink" title="{m,n}:至少出现m次，至多出现n次；"></a>{m,n}:至少出现m次，至多出现n次；</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;a\&#123;1,3\&#125;&quot; test1</span><br><span class="line">ab</span><br><span class="line">aaaabcd</span><br><span class="line">aaxxxxxxxd</span><br><span class="line">cccaabbbd</span><br><span class="line">    \&#123;0,n\&#125;:至多n次；</span><br><span class="line">    \&#123;m,\&#125;：至少m次；</span><br></pre></td></tr></table></figure>
+<h5 id="（3）位置锚定"><a href="#（3）位置锚定" class="headerlink" title="（3）位置锚定"></a>（3）位置锚定</h5><p>限制使用模式搜索文本，限制模式所匹配到的文本只能出现于目标文本的哪个位置；</p>
+<p><code>^</code>：行首锚定；用于模式的最左侧，^PATTERN<br><code>$</code>：行尾锚定；用于模式的最右侧，PATTERN$<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># ps -ef|grep &quot;^root.*bash$&quot;</span><br><span class="line">root       1143   1141  0 09:20 pts/0    00:00:00 -bash</span><br><span class="line">^PATTERN$：要让PATTERN完全匹配一整行；</span><br><span class="line"># grep &quot;^hello&quot; /tmp/fstab</span><br><span class="line">hello</span><br><span class="line">hello world</span><br><span class="line"># grep &quot;^hello$&quot; /tmp/fstab</span><br><span class="line">hello</span><br></pre></td></tr></table></figure></p>
+<h6 id="：空行；"><a href="#：空行；" class="headerlink" title="^$：空行；"></a>^$：空行；</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">常用语在文档中过滤多余的空行，-v指取反之意</span><br><span class="line"># cat test</span><br><span class="line">Hello World</span><br><span class="line"></span><br><span class="line">how are you?</span><br><span class="line"></span><br><span class="line">Mageedu is very good!</span><br><span class="line"></span><br><span class="line"># grep -v &quot;^$&quot; test</span><br><span class="line">Hello World</span><br><span class="line">how are you?</span><br><span class="line">Mageedu is very good!</span><br></pre></td></tr></table></figure>
+<h6 id="space-：用来在-匹配不到的时候使用；"><a href="#space-：用来在-匹配不到的时候使用；" class="headerlink" title="^[[:space:]]*$：用来在^$匹配不到的时候使用；"></a>^[[:space:]]*$：用来在^$匹配不到的时候使用；</h6><p>此处指有的时候空行中包含空白字符，比如空格、制表符等，用^$就过滤不出来了，此处可以使用此命令过滤<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># grep -v &quot;^$&quot; test</span><br><span class="line">Hello World</span><br><span class="line">  </span><br><span class="line">      </span><br><span class="line">how are you?</span><br><span class="line">       </span><br><span class="line">       </span><br><span class="line">Mageedu is very good!</span><br><span class="line"># grep -v &quot;^[[:space:]]*$&quot; test</span><br><span class="line">Hello World</span><br><span class="line">how are you?</span><br><span class="line">Mageedu is very good!</span><br></pre></td></tr></table></figure></p>
+<h6 id="lt-或-b：词首锚定，用于单词模式的左侧，格式为-lt-PATTERN-bPATTERN"><a href="#lt-或-b：词首锚定，用于单词模式的左侧，格式为-lt-PATTERN-bPATTERN" class="headerlink" title="\&lt;或\b：词首锚定，用于单词模式的左侧，格式为\&lt;PATTERN, \bPATTERN"></a>\&lt;或\b：词首锚定，用于单词模式的左侧，格式为\&lt;PATTERN, \bPATTERN</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># fdisk -l|grep &quot;/dev/[sh]d[a-z]&quot;</span><br><span class="line">Disk /dev/sda: 128.8 GB, 128849018880 bytes, 251658240 sectors</span><br><span class="line">/dev/sda1   *        2048     1026047      512000   83  Linux</span><br><span class="line">/dev/sda2         1026048    84912127    41943040   83  Linux</span><br><span class="line">/dev/sda3        84912128   126855167    20971520   83  Linux</span><br><span class="line">/dev/sda4       126855168   251658239    62401536    5  Extended</span><br><span class="line">/dev/sda5       126859264   131055615     2098176   82  Linux swap / Solaris</span><br><span class="line"># fdisk -l|grep &quot;/dev/[sh]d[a-z]\&gt;&quot;</span><br><span class="line">Disk /dev/sda: 128.8 GB, 128849018880 bytes, 251658240 sectors</span><br></pre></td></tr></table></figure>
+<h6 id="或-b：词尾锚定，用于单词模式的右侧，格式为PATTERN-PATTERN-b"><a href="#或-b：词尾锚定，用于单词模式的右侧，格式为PATTERN-PATTERN-b" class="headerlink" title=">或\b：词尾锚定，用于单词模式的右侧，格式为PATTERN>, PATTERN\b"></a>>或\b：词尾锚定，用于单词模式的右侧，格式为PATTERN>, PATTERN\b</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;\&lt;root&quot; /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br></pre></td></tr></table></figure>
+<h6 id="lt-PATTERN-：单词锚定"><a href="#lt-PATTERN-：单词锚定" class="headerlink" title="\&lt;PATTERN>：单词锚定"></a>\&lt;PATTERN>：单词锚定</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">单词：由非特殊字符组成的连续字符（字符串）都称为单词；</span><br><span class="line"># cat /tmp/ifconfig.test </span><br><span class="line">/usr/sbin/ifconfig</span><br><span class="line">/usr/sbin/ifconfig2</span><br><span class="line">/usr/sbin/ifconfig3</span><br><span class="line"># grep &quot;ifconfig&quot; /tmp/ifconfig.test </span><br><span class="line">/usr/sbin/ifconfig</span><br><span class="line">/usr/sbin/ifconfig2</span><br><span class="line">/usr/sbin/ifconfig3</span><br><span class="line"># grep &quot;\&lt;ifconfig\&gt;&quot; /tmp/ifconfig.test </span><br><span class="line">/usr/sbin/ifconfig</span><br></pre></td></tr></table></figure>
+<h5 id="（4）分组与引用"><a href="#（4）分组与引用" class="headerlink" title="（4）分组与引用"></a>（4）分组与引用</h5><p>(PATTERN):将次PATTERN匹配到的字符当做一个整体处理；分组括号中的模式匹配到的字符会被正则表达式引擎自动纪录于变量中，这些变量分别是\1，\2，\3<br>    \1：第一组括号中的pattern匹配到的字符串；<br>    \2：第二组括号中的pattern匹配到的字符串；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># grep &quot;^\([[:alnum:]]\+\)\&gt;.*\1$&quot; /etc/passwd</span><br><span class="line">sync:x:5:0:sync:/sbin:/bin/sync</span><br><span class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</span><br><span class="line">halt:x:7:0:halt:/sbin:/sbin/halt</span><br><span class="line">nologin:x:5010:5010::/home/nologin:/sbin/nologin</span><br></pre></td></tr></table></figure></p>
+<h5 id="b、扩展正则表达式meta字符"><a href="#b、扩展正则表达式meta字符" class="headerlink" title="b、扩展正则表达式meta字符"></a>b、扩展正则表达式meta字符</h5><p>注意：与基本正则表达式不同，扩展表达式在一些参数上可以不使用转意符（\），但是在使用上没有什么区别，这里我举几个例子，其他基本与基本正则表达式使用相同！      </p>
+<h5 id="此处表示过滤1-255的所有整数"><a href="#此处表示过滤1-255的所有整数" class="headerlink" title="此处表示过滤1-255的所有整数"></a>此处表示过滤1-255的所有整数</h5><p><img src="http://zantony.top/uploads/grep.png" alt="enter image description here"></p>
+<h5 id="此处表示取出绝对路径中的基名"><a href="#此处表示取出绝对路径中的基名" class="headerlink" title="此处表示取出绝对路径中的基名"></a>此处表示取出绝对路径中的基名</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># echo `which pwd`|egrep &quot;[^/]+/?$&quot; </span><br><span class="line">/usr/bin/pwd</span><br><span class="line"># echo `which pwd`|egrep &quot;[^/]+/?$&quot; -o</span><br><span class="line">pwd</span><br></pre></td></tr></table></figure>
+<h5 id="此处表示查看root、mageedu、centos用户的详细信息"><a href="#此处表示查看root、mageedu、centos用户的详细信息" class="headerlink" title="此处表示查看root、mageedu、centos用户的详细信息"></a>此处表示查看root、mageedu、centos用户的详细信息</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># egrep &quot;^(root|mageedu|centos)\&gt;&quot; /etc/passwd</span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">mageedu:x:1000:1000:mageedu:/home/mageedu:/bin/bash</span><br><span class="line">centos:x:5008:5008::/home/centos:/bin/bash</span><br></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>（1）字符匹配<br>.:匹配任意单个字符；<br><code>[ ]</code>:匹配方位内的任意单个数字；<br><code>[^]</code>匹配范围外的任意单个数字；<br><code>[[:upper:]]</code>：所有大写字母；<br><code>[[:lower:]]</code>：所有小写字母；<br><code>[[:digit:]]</code>：所有的数字；<br><code>[[:alpha:]]</code>：所有字母；<br><code>[[:alnum:]]</code>：所有字母和数字；<br><code>[[:space:]]</code>：空白字符；<br><code>[[:punct:]]</code>：标点符号；<br>（2）匹配次数<br>主要用于限制字符要出现的次数，一般放在出现的次数的字符后面。<br><code>*</code>：匹配前面的字符任意次（0,1或多次）；<br><code>.*</code>：任意长度的任意字符（.为匹配单个字符，<em>为任意次）<br><code>+</code>：匹配前面的字符至少1次；<br><code>?</code>：匹配前面的0次或1次，即前面的字符可有可无；<br><code>{m}</code>：固定匹配前面的字符出现m次，m为非负数；<br><code>{m,n}</code>:至少出现m次，至多出现n次；<br><code>{0,n}</code>:至多n次；<br><code>{m,}</code>：至少m次；<br>（3）位置锚定<br>扩展正则表达式中：单词锚定符（\&lt;,>）不能去除转意符()<br><code>^</code>：行首锚定；用于模式的最左侧，^PATTERN<br><code>$</code>：行尾锚定；用于模式的最右侧，PATTERN$<br><code>^PATTERN$</code>：要让PATTERN完全匹配一整行；<br><code>^$</code>：空行；<br>`^[[:space:]]</em>$<code>: 用来在^$匹配不到的时候使用；</code>\&lt;或\b<code>：词首锚定，用于单词模式的左侧，格式为\&lt;PATTERN, \bPATTERN</code>>或\b<code>：词尾锚定，用于单词模式的右侧，格式为PATTERN\&gt;, PATTERN\b</code>\&lt;PATTERN><code>：单词锚定
+单词：由非特殊字符组成的连续字符（字符串）都称为单词；
+（4）分组与引用
+(PATTERN):将次PATTERN匹配到的字符当做一个整体处理；分组括号中的模式匹配到的字符会被正则表达式引擎自动纪录于变量中，这些变量分别是\1，\2，\3</code>\1<code>：第一组括号中的pattern匹配到的字符串；</code> \2<code>：第二组括号中的pattern匹配到的字符串
+这里的\1 \2不能省略转意符；
+（5）或者</code> a|b<code>：a或者b</code>C|cat<code>：表示C或cat</code>(C|c)at`：表示Cat或cat<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># fdisk -l|grep -E &quot;/dev/(s|h)d[a-z]\&gt;&quot;</span><br><span class="line">Disk /dev/sda: 128.8 GB, 128849018880 bytes, 251658240 sectors</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>作者：Antony WX&amp;QQ：1257465991<br>Q/A：如有问题请慷慨提出</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="3Golds 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="3Golds 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/2017-01-07-FastDFS-unti-for-systemd/" rel="next" title="FastDFS unti for systemd">
+                <i class="fa fa-chevron-left"></i> FastDFS unti for systemd
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/2017-01-07-Linux用户、用户组及权限管理/" rel="prev" title="Linux用户、用户组及权限管理">
+                Linux用户、用户组及权限管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/gophers.jpg"
+                alt="3Golds" />
+            
+              <p class="site-author-name" itemprop="name">3Golds</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/3Golds" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:go80800@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Linux文本处理三剑客"><span class="nav-number">1.</span> <span class="nav-text">一、Linux文本处理三剑客</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、grep是什么？"><span class="nav-number">2.</span> <span class="nav-text">二、grep是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、grep与egrep的主要参数"><span class="nav-number">3.</span> <span class="nav-text">三、grep与egrep的主要参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#alias"><span class="nav-number">3.1.</span> <span class="nav-text">alias</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#i：忽略字符大小写；"><span class="nav-number">3.2.</span> <span class="nav-text">-i：忽略字符大小写；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#o：仅显示匹配-到的文本自身；"><span class="nav-number">3.3.</span> <span class="nav-text">-o：仅显示匹配 到的文本自身；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#q-静默模式，不输出任何信息；（省得把输出放到-dev-null，节省系统资源）"><span class="nav-number">3.4.</span> <span class="nav-text">-q, 静默模式，不输出任何信息；（省得把输出放到/dev/null，节省系统资源）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#P-支持使用pcre正则表达式（per语言）；"><span class="nav-number">3.5.</span> <span class="nav-text">-P, 支持使用pcre正则表达式（per语言）；</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#e-PATTERN可以同时匹配多个模式"><span class="nav-number">3.6.</span> <span class="nav-text">-e PATTERN可以同时匹配多个模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#f-FILEFILE为每行包含了一个pattern的文本文件，即grep-script；（读取文件中的每一行pattern来对指定FILE进行过滤）"><span class="nav-number">3.7.</span> <span class="nav-text">-f FILEFILE为每行包含了一个pattern的文本文件，即grep script；（读取文件中的每一行pattern来对指定FILE进行过滤）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#A-NUM-显示匹配出的后-行"><span class="nav-number">3.8.</span> <span class="nav-text">-A NUM 显示匹配出的后#行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B-NUM-显示匹配出的前-行"><span class="nav-number">3.9.</span> <span class="nav-text">-B NUM 显示匹配出的前#行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C-NUM显示匹配出的前后-行"><span class="nav-number">3.10.</span> <span class="nav-text">-C NUM显示匹配出的前后#行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他参数"><span class="nav-number">3.11.</span> <span class="nav-text">其他参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、grep使用及正则表达式"><span class="nav-number">4.</span> <span class="nav-text">四、grep使用及正则表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-正则表达式的组成"><span class="nav-number">4.1.</span> <span class="nav-text">1.正则表达式的组成</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-下面讲下正则表达式中常见的meta字符-元字符"><span class="nav-number">4.2.</span> <span class="nav-text">2.下面讲下正则表达式中常见的meta字符(元字符)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#a、基本正则表达式meta字符"><span class="nav-number">4.2.1.</span> <span class="nav-text">a、基本正则表达式meta字符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（1）字符匹配"><span class="nav-number">4.2.2.</span> <span class="nav-text">（1）字符匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#“-”-匹配任意单个字符；"><span class="nav-number">4.2.2.1.</span> <span class="nav-text">“.”:匹配任意单个字符；</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#匹配方位内的任意单个数字；"><span class="nav-number">4.2.2.2.</span> <span class="nav-text">[ ]:匹配方位内的任意单个数字；</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#匹配范围外的任意单个数字：托字符指取反之意-下面会讲到"><span class="nav-number">4.2.2.3.</span> <span class="nav-text">[^]匹配范围外的任意单个数字：托字符指取反之意,下面会讲到</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#upper-：所有大写字母"><span class="nav-number">4.2.2.4.</span> <span class="nav-text">[[:upper:]]：所有大写字母</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#其他表示数字的元字符"><span class="nav-number">4.2.2.5.</span> <span class="nav-text">其他表示数字的元字符</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#（2）匹配次数"><span class="nav-number">4.2.2.6.</span> <span class="nav-text">（2）匹配次数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#：匹配前面的字符任意次（0-1或多次）；"><span class="nav-number">4.2.2.7.</span> <span class="nav-text">*：匹配前面的字符任意次（0,1或多次）；</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#：任意长度的任意字符（-为匹配单个字符，-为任意次）"><span class="nav-number">4.2.2.8.</span> <span class="nav-text">.*：任意长度的任意字符（.为匹配单个字符，*为任意次）</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#：匹配前面的字符至少1次；"><span class="nav-number">4.2.2.9.</span> <span class="nav-text">\+：匹配前面的字符至少1次；</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#：匹配前面的0次或1次，即前面的字符可有可无；"><span class="nav-number">4.2.2.10.</span> <span class="nav-text">\?：匹配前面的0次或1次，即前面的字符可有可无；</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#m-：固定匹配前面的字符出现m次，m为非负数；"><span class="nav-number">4.2.2.11.</span> <span class="nav-text">{\m}：固定匹配前面的字符出现m次，m为非负数；</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#m-n-至少出现m次，至多出现n次；"><span class="nav-number">4.2.2.12.</span> <span class="nav-text">{m,n}:至少出现m次，至多出现n次；</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（3）位置锚定"><span class="nav-number">4.2.3.</span> <span class="nav-text">（3）位置锚定</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#：空行；"><span class="nav-number">4.2.3.1.</span> <span class="nav-text">^$：空行；</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#space-：用来在-匹配不到的时候使用；"><span class="nav-number">4.2.3.2.</span> <span class="nav-text">^[[:space:]]*$：用来在^$匹配不到的时候使用；</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#lt-或-b：词首锚定，用于单词模式的左侧，格式为-lt-PATTERN-bPATTERN"><span class="nav-number">4.2.3.3.</span> <span class="nav-text">\&lt;或\b：词首锚定，用于单词模式的左侧，格式为\&lt;PATTERN, \bPATTERN</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#或-b：词尾锚定，用于单词模式的右侧，格式为PATTERN-PATTERN-b"><span class="nav-number">4.2.3.4.</span> <span class="nav-text">&gt;或\b：词尾锚定，用于单词模式的右侧，格式为PATTERN&gt;, PATTERN\b</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#lt-PATTERN-：单词锚定"><span class="nav-number">4.2.3.5.</span> <span class="nav-text">\&lt;PATTERN&gt;：单词锚定</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（4）分组与引用"><span class="nav-number">4.2.4.</span> <span class="nav-text">（4）分组与引用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#b、扩展正则表达式meta字符"><span class="nav-number">4.2.5.</span> <span class="nav-text">b、扩展正则表达式meta字符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#此处表示过滤1-255的所有整数"><span class="nav-number">4.2.6.</span> <span class="nav-text">此处表示过滤1-255的所有整数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#此处表示取出绝对路径中的基名"><span class="nav-number">4.2.7.</span> <span class="nav-text">此处表示取出绝对路径中的基名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#此处表示查看root、mageedu、centos用户的详细信息"><span class="nav-number">4.2.8.</span> <span class="nav-text">此处表示查看root、mageedu、centos用户的详细信息</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-number">4.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">3Golds</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2159314"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bK3mQMcoKlwuLljKCOH5tsP1-gzGzoHsz", "343DJUSwdwM3miekBuwdNf24");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({});</script></body>
+</html>

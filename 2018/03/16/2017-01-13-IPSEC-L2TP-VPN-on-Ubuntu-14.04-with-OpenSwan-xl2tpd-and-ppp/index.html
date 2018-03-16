@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.jpg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="vpn,ipsec,l2tp" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Ipsec vpn">
+<meta name="keywords" content="vpn,ipsec,l2tp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp">
+<meta property="og:url" content="http://zhaodaxin.com/2018/03/16/2017-01-13-IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/index.html">
+<meta property="og:site_name" content="3Golds">
+<meta property="og:description" content="Ipsec vpn">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-16T08:50:33.805Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp">
+<meta name="twitter:description" content="Ipsec vpn">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhaodaxin.com/2018/03/16/2017-01-13-IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/"/>
+
+
+
+
+
+  <title>IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp | 3Golds</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">3Golds</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ThreeGold</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhaodaxin.com/2018/03/16/2017-01-13-IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="3Golds">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/gophers.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="3Golds">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-16T16:50:33+08:00">
+                2018-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/VPN/" itemprop="url" rel="index">
+                    <span itemprop="name">VPN</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/16/2017-01-13-IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp/" class="leancloud_visitors" data-flag-title="IPSEC-L2TP-VPN-on-Ubuntu-14.04-with-OpenSwan-xl2tpd-and-ppp">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1,326
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  Ipsec vpn
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="VPN原理"><a href="#VPN原理" class="headerlink" title="VPN原理"></a>VPN原理</h3><p><a href="http://www.cisco.com/support/zh/105/IPSECpart1.shtml#glossary" target="_blank" rel="noopener">http://www.cisco.com/support/zh/105/IPSECpart1.shtml#glossary</a></p>
+<p><a href="http://www.china-ccie.com/doc/vpn/vpn.html" target="_blank" rel="noopener">http://www.china-ccie.com/doc/vpn/vpn.html</a></p>
+<h3 id="Install-ppp-openswan-and-xl2tpd"><a href="#Install-ppp-openswan-and-xl2tpd" class="headerlink" title="Install ppp openswan and xl2tpd"></a>Install ppp openswan and xl2tpd</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo apt-get install openswan xl2tpd ppp lsof</span><br></pre></td></tr></table></figure>
+<h3 id="Firewall-and-sysctl"><a href="#Firewall-and-sysctl" class="headerlink" title="Firewall and sysctl"></a>Firewall and sysctl</h3><h4 id="配置一条防火墙语句"><a href="#配置一条防火墙语句" class="headerlink" title="配置一条防火墙语句"></a>配置一条防火墙语句</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">iptables -t nat -A POSTROUTING -s %SERVERIP% -o eth0 -j MASQUERADE</span><br></pre></td></tr></table></figure>
+<h4 id="启用内核转发和禁用ICP-redirects"><a href="#启用内核转发和禁用ICP-redirects" class="headerlink" title="启用内核转发和禁用ICP redirects"></a>启用内核转发和禁用ICP redirects</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">echo &quot;net.ipv4.ip_forward = 1&quot; |  tee -a /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line">echo &quot;net.ipv4.conf.all.accept_redirects = 0&quot; |  tee -a /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line">echo &quot;net.ipv4.conf.all.send_redirects = 0&quot; |  tee -a /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line">echo &quot;net.ipv4.conf.default.rp_filter = 0&quot; |  tee -a /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line">echo &quot;net.ipv4.conf.default.accept_source_route = 0&quot; |  tee -a /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line">echo &quot;net.ipv4.conf.default.send_redirects = 0&quot; |  tee -a /etc/sysctl.conf</span><br><span class="line"></span><br><span class="line">echo &quot;net.ipv4.icmp_ignore_bogus_error_responses = 1&quot; |  tee -a /etc/sysctl.conf</span><br></pre></td></tr></table></figure>
+<h4 id="设置如下参数到其他网络接口"><a href="#设置如下参数到其他网络接口" class="headerlink" title="设置如下参数到其他网络接口"></a>设置如下参数到其他网络接口</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ for vpn in /proc/sys/net/ipv4/conf/*; do echo 0 &gt; $vpn/accept_redirects; echo 0 &gt; $vpn/send_redirects; done</span><br><span class="line">$ sysctl -p</span><br></pre></td></tr></table></figure>
+<h4 id="设置重启后执行-etc-rc-local"><a href="#设置重启后执行-etc-rc-local" class="headerlink" title="设置重启后执行/etc/rc.local"></a>设置重启后执行<code>/etc/rc.local</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo vim /etc/rc.local</span><br><span class="line"></span><br><span class="line">for vpn in /proc/sys/net/ipv4/conf/*; do echo 0 &gt; $vpn/accept_redirects; echo 0 &gt; $vpn/send_redirects; done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">iptables -t nat -A POSTROUTING -s %SERVERIP% -o eth0 -j MASQUERADE</span><br></pre></td></tr></table></figure>
+<h3 id="配置-Openswan-IPSEC"><a href="#配置-Openswan-IPSEC" class="headerlink" title="配置 Openswan(IPSEC)"></a>配置 Openswan(IPSEC)</h3><p>使用你的编辑器打开ipsec的配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/etc/ipsec.conf</span><br></pre></td></tr></table></figure>
+<p>配置如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">config setup</span><br><span class="line"></span><br><span class="line">      nat_traversal=yes</span><br><span class="line"></span><br><span class="line">      virtual_private=%v4:10.0.0.0/8,%v4:192.168.0.0/16,%v4:172.16.0.0/12,%v4:!10.152.2.0/24</span><br><span class="line"></span><br><span class="line">      # 这里包含的网络地址允许配置为远程客户端所在的子网。换句话说，</span><br><span class="line"></span><br><span class="line">      # 这些地址范围应该是你的NAT路由器后面的客户端的地址。</span><br><span class="line"></span><br><span class="line">      oe=off</span><br><span class="line"></span><br><span class="line">      protostack=netkey</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">conn L2TP-PSK-NAT</span><br><span class="line"></span><br><span class="line">      rightsubnet=vhost:%priv</span><br><span class="line"></span><br><span class="line">      also=L2TP-PSK-noNAT</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">conn L2TP-PSK-noNAT</span><br><span class="line"></span><br><span class="line">      authby=secret</span><br><span class="line"></span><br><span class="line">      pfs=no</span><br><span class="line"></span><br><span class="line">      auto=add</span><br><span class="line"></span><br><span class="line">      keyingtries=3</span><br><span class="line"></span><br><span class="line">      rekey=no</span><br><span class="line"></span><br><span class="line">      # Apple 的 iOS 不会发送 delete 提醒，</span><br><span class="line"></span><br><span class="line">      # 所以我们需要通过死亡对端（dead peer）检测来识别断掉的客户端</span><br><span class="line"></span><br><span class="line">      dpddelay=30</span><br><span class="line"></span><br><span class="line">      dpdtimeout=120</span><br><span class="line"></span><br><span class="line">      dpdaction=clear</span><br><span class="line"></span><br><span class="line">      # 设置 ikelifetime 和 keylife 和 Windows 的默认设置一致</span><br><span class="line"></span><br><span class="line">      ikelifetime=8h</span><br><span class="line"></span><br><span class="line">      keylife=1h</span><br><span class="line"></span><br><span class="line">      type=transport</span><br><span class="line"></span><br><span class="line">      # 替换 IP 地址为你的本地IP （一般是，私有地址、NAT内的地址）</span><br><span class="line"></span><br><span class="line">      left=10.100.1.217</span><br><span class="line"></span><br><span class="line">      # 用于升级过的 Windows 2000/XP 客户端</span><br><span class="line"></span><br><span class="line">      leftprotoport=17/1701</span><br><span class="line"></span><br><span class="line">      # 要支持老的客户端，需要设置 leftprotoport=17/%any</span><br><span class="line"></span><br><span class="line">      right=%any</span><br><span class="line"></span><br><span class="line">      rightprotoport=17/%any</span><br><span class="line"></span><br><span class="line">      # 强制所有连接都NAT，因为 iOS</span><br><span class="line"></span><br><span class="line">      forceencaps=yes</span><br></pre></td></tr></table></figure>
+<p>通过如下命令可以获取你本地的网络ip(当然，是外网ip，如果你想使用内网ip，请忽略)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">curl ifconfig.me</span><br><span class="line"></span><br><span class="line"># 或者</span><br><span class="line"></span><br><span class="line">curl http://ip.mtak.nl</span><br></pre></td></tr></table></figure>
+<h4 id="配置共享密钥"><a href="#配置共享密钥" class="headerlink" title="配置共享密钥"></a>配置共享密钥</h4><p><code>/etc/ipsec.secrets</code> file,确保其长度够</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">%SERVER_IP%  %any  : PSK &quot;BC2BCKALFJKAJFKAMCJKFKSJKNCMZJKAK443&quot;</span><br></pre></td></tr></table></figure>
+<p>如果你想生成一个random key，使用openssl命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo openssl rand -hex 30</span><br><span class="line"></span><br><span class="line">39651bbc2c459109410b3b28e3507d27799feb5e8e0dc25532d29274abb7</span><br></pre></td></tr></table></figure>
+<h4 id="校验ipsec设置"><a href="#校验ipsec设置" class="headerlink" title="校验ipsec设置"></a>校验ipsec设置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ipsec verify</span><br><span class="line"></span><br><span class="line">Verifying installed system and configuration files</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Version check and ipsec on-path                   	[OK]</span><br><span class="line"></span><br><span class="line">Libreswan 3.18 (netkey) on 3.13.0-101-generic</span><br><span class="line"></span><br><span class="line">Checking for IPsec support in kernel              	[OK]</span><br><span class="line"></span><br><span class="line"> NETKEY: Testing XFRM related proc values</span><br><span class="line"></span><br><span class="line">         ICMP default/send_redirects              	[OK]</span><br><span class="line"></span><br><span class="line">         ICMP default/accept_redirects            	[OK]</span><br><span class="line"></span><br><span class="line">         XFRM larval drop                         	[OK]</span><br><span class="line"></span><br><span class="line">Pluto ipsec.conf syntax                           	[OK]</span><br><span class="line"></span><br><span class="line">Hardware random device                            	[N/A]</span><br><span class="line"></span><br><span class="line">Two or more interfaces found, checking IP forwarding	[OK]</span><br><span class="line"></span><br><span class="line">Checking rp_filter                                	[OK]</span><br><span class="line"></span><br><span class="line">Checking that pluto is running                    	[OK]</span><br><span class="line"></span><br><span class="line"> Pluto listening for IKE on udp 500               	[OK]</span><br><span class="line"></span><br><span class="line"> Pluto listening for IKE/NAT-T on udp 4500        	[OK]</span><br><span class="line"></span><br><span class="line"> Pluto ipsec.secret syntax                        	[OK]</span><br><span class="line"></span><br><span class="line">Checking &apos;ip&apos; command                             	[OK]</span><br><span class="line"></span><br><span class="line">Checking &apos;iptables&apos; command                       	[OK]</span><br><span class="line"></span><br><span class="line">Checking &apos;prelink&apos; command does not interfere with FIPSChecking for obsolete ipsec.conf options          	[OK]</span><br><span class="line"></span><br><span class="line">Opportunistic Encryption                          	[DISABLED]</span><br></pre></td></tr></table></figure>
+<h3 id="配置-xl2tpd"><a href="#配置-xl2tpd" class="headerlink" title="配置 xl2tpd"></a>配置 xl2tpd</h3><p><code>/etc/xl2tpd/xl2tpd.conf</code> 配置文件</p>
+<h4 id="修改其配置"><a href="#修改其配置" class="headerlink" title="修改其配置"></a>修改其配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[global]</span><br><span class="line"></span><br><span class="line">ipsec saref = no</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[lns default]</span><br><span class="line"></span><br><span class="line">ip range = 10.0.1.230-10.0.1.240</span><br><span class="line"></span><br><span class="line">local ip = 10.0.1.217</span><br><span class="line"></span><br><span class="line">require chap = yes</span><br><span class="line"></span><br><span class="line">refuse pap = yes</span><br><span class="line"></span><br><span class="line">require authentication = yes</span><br><span class="line"></span><br><span class="line">ppp debug = yes</span><br><span class="line"></span><br><span class="line">pppoptfile = /etc/ppp/options.xl2tpd</span><br><span class="line"></span><br><span class="line">length bit = yes</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>ip range = 主要提供给连接的客户端使用</p>
+</li>
+<li><p>local ip = vpn server ip</p>
+</li>
+<li><p>refuse pap = refuse pap认证</p>
+</li>
+<li><p>ppp debug = yes 测试的时候使用，不要再生产使用</p>
+</li>
+</ul>
+<p>其他认证方式：<a href="https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_14.04.html" target="_blank" rel="noopener">https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_14.04.html</a></p>
+<h3 id="配置ppp"><a href="#配置ppp" class="headerlink" title="配置ppp"></a>配置ppp</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ vim /etc/ppp/options.xl2tpd</span><br><span class="line"></span><br><span class="line">refuse-mschap-v2</span><br><span class="line"></span><br><span class="line">refuse-mschap</span><br><span class="line"></span><br><span class="line">ms-dns 114.114.114.114</span><br><span class="line"></span><br><span class="line">ms-dns 202.106.0.20</span><br><span class="line"></span><br><span class="line">asyncmap 0</span><br><span class="line"></span><br><span class="line">auth</span><br><span class="line"></span><br><span class="line">crtscts</span><br><span class="line"></span><br><span class="line">idle 1800</span><br><span class="line"></span><br><span class="line">mtu 1200</span><br><span class="line"></span><br><span class="line">mru 1200</span><br><span class="line"></span><br><span class="line">lock</span><br><span class="line"></span><br><span class="line">hide-password</span><br><span class="line"></span><br><span class="line">local</span><br><span class="line"></span><br><span class="line">#debug</span><br><span class="line"></span><br><span class="line">name l2tpd</span><br><span class="line"></span><br><span class="line">proxyarp</span><br><span class="line"></span><br><span class="line">lcp-echo-interval 30</span><br><span class="line"></span><br><span class="line">lcp-echo-failure 4</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>ms-dns: 提供给客户端的dns地址</p>
+</li>
+<li><p>proxyarp：添加一个加密给系统ARP表(Add an entry to this systems ARP [Address Resolution Protocol] table with the IP address of the peer and the Ethernet address of this system. This will have the effect of making the peer appear to other systems to be on the local ethernet.)</p>
+</li>
+<li><p>name l2tpd: 用于ppp认证文件给l2tpd</p>
+</li>
+</ul>
+<h4 id="添加一个用户"><a href="#添加一个用户" class="headerlink" title="添加一个用户"></a>添加一个用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ sudo vim /etc/ppp/chap-secrets</span><br><span class="line"></span><br><span class="line">&quot;test&quot; l2tpd &quot;test@123..$$_@&quot; *</span><br></pre></td></tr></table></figure>
+<h3 id="重启服务并测试"><a href="#重启服务并测试" class="headerlink" title="重启服务并测试"></a>重启服务并测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">/etc/init.d/ipsec restart </span><br><span class="line"></span><br><span class="line">/etc/init.d/xl2tpd restart</span><br></pre></td></tr></table></figure>
+<p>日志存储路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/var/log/syslog</span><br><span class="line"></span><br><span class="line">/var/log/auth.log</span><br></pre></td></tr></table></figure>
+<h3 id="其他平台配置"><a href="#其他平台配置" class="headerlink" title="其他平台配置"></a>其他平台配置</h3><ul>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_vpn_with_CentOS_7.html" target="_blank" rel="noopener">CentOS 7, Scientific Linux 7 or Red Hat Enterprise Linux 7 (IKEv2,no L2TP)</a></p>
+</li>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_on_CentOS_-_Red_Hat_Enterprise_Linux_or_Scientific_-_Linux_6.html" target="_blank" rel="noopener">CentOS 6, Scientific Linux 6 or Red Hat Enterprise Linux 6</a></p>
+</li>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_on_a_Raspberry_Pi_with_Arch_Linux.html" target="_blank" rel="noopener">Raspberry Pi with Arch Linux ARM</a></p>
+</li>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_vpn_with_Ubuntu_16.04.html" target="_blank" rel="noopener">Ubuntu 16.04, (IKEv2,no L2TP)</a></p>
+</li>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_vpn_with_Ubuntu_15.10.html" target="_blank" rel="noopener">Ubuntu 15.10, (IKEv2,no L2TP)</a></p>
+</li>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_vpn_with_Ubuntu_15.04.html" target="_blank" rel="noopener">Ubuntu 15.04, (IKEv2,no L2TP)</a></p>
+</li>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_13.10.html" target="_blank" rel="noopener">Ubuntu 13.10</a></p>
+</li>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_13.04.html" target="_blank" rel="noopener">Ubuntu 13.04</a></p>
+</li>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_12.10.html" target="_blank" rel="noopener">Ubuntu 12.10</a></p>
+</li>
+<li><p><a href="https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_with_Ubuntu_12.04.html" target="_blank" rel="noopener">Ubuntu 12.04 LTS</a></p>
+</li>
+</ul>
+<blockquote>
+<p>作者：<code>Antony</code> WX&amp;QQ：<code>1257465991</code><br>Q/A：如有问题请慷慨提出</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="3Golds 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="3Golds 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/16/2017-01-12-aws自定义AMI-UUID相同处理方法/" rel="next" title="aws自定义AMI-UUID相同处理方法">
+                <i class="fa fa-chevron-left"></i> aws自定义AMI-UUID相同处理方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/16/2017-01-19-CoreDump/" rel="prev" title="Linux系统异常-CoreDump详解">
+                Linux系统异常-CoreDump详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/gophers.jpg"
+                alt="3Golds" />
+            
+              <p class="site-author-name" itemprop="name">3Golds</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/3Golds" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:go80800@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#VPN原理"><span class="nav-number">1.</span> <span class="nav-text">VPN原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-ppp-openswan-and-xl2tpd"><span class="nav-number">2.</span> <span class="nav-text">Install ppp openswan and xl2tpd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Firewall-and-sysctl"><span class="nav-number">3.</span> <span class="nav-text">Firewall and sysctl</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置一条防火墙语句"><span class="nav-number">3.1.</span> <span class="nav-text">配置一条防火墙语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启用内核转发和禁用ICP-redirects"><span class="nav-number">3.2.</span> <span class="nav-text">启用内核转发和禁用ICP redirects</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置如下参数到其他网络接口"><span class="nav-number">3.3.</span> <span class="nav-text">设置如下参数到其他网络接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置重启后执行-etc-rc-local"><span class="nav-number">3.4.</span> <span class="nav-text">设置重启后执行/etc/rc.local</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-Openswan-IPSEC"><span class="nav-number">4.</span> <span class="nav-text">配置 Openswan(IPSEC)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置共享密钥"><span class="nav-number">4.1.</span> <span class="nav-text">配置共享密钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#校验ipsec设置"><span class="nav-number">4.2.</span> <span class="nav-text">校验ipsec设置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-xl2tpd"><span class="nav-number">5.</span> <span class="nav-text">配置 xl2tpd</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#修改其配置"><span class="nav-number">5.1.</span> <span class="nav-text">修改其配置</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置ppp"><span class="nav-number">6.</span> <span class="nav-text">配置ppp</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#添加一个用户"><span class="nav-number">6.1.</span> <span class="nav-text">添加一个用户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重启服务并测试"><span class="nav-number">7.</span> <span class="nav-text">重启服务并测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他平台配置"><span class="nav-number">8.</span> <span class="nav-text">其他平台配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">3Golds</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2159314"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bK3mQMcoKlwuLljKCOH5tsP1-gzGzoHsz", "343DJUSwdwM3miekBuwdNf24");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({});</script></body>
+</html>

@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.jpg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ruby," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="最近接触了很多ruby程序，除了java之外，让我感觉第二耗时、不是很舒服的语言。但是ruby不让人舒服主要还是网络方面的问题，不过只要稍微配置就能让装ruby程序变得飞快，不用一安装一天。本文做个总结和梳理 先介绍下Ruby相关的各种概念（rvm, gem, bundle, rake, rails等）Ruby这个就不用多说了 RVM用于帮你安装Ruby环境，帮你管理多个Ruby环境，帮你管理你开">
+<meta name="keywords" content="ruby">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ruby 环境那些坑">
+<meta property="og:url" content="http://zhaodaxin.com/2017/01/23/2017-01-23-Ruby环境那些坑/index.html">
+<meta property="og:site_name" content="3Golds">
+<meta property="og:description" content="最近接触了很多ruby程序，除了java之外，让我感觉第二耗时、不是很舒服的语言。但是ruby不让人舒服主要还是网络方面的问题，不过只要稍微配置就能让装ruby程序变得飞快，不用一安装一天。本文做个总结和梳理 先介绍下Ruby相关的各种概念（rvm, gem, bundle, rake, rails等）Ruby这个就不用多说了 RVM用于帮你安装Ruby环境，帮你管理多个Ruby环境，帮你管理你开">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-16T08:50:33.807Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ruby 环境那些坑">
+<meta name="twitter:description" content="最近接触了很多ruby程序，除了java之外，让我感觉第二耗时、不是很舒服的语言。但是ruby不让人舒服主要还是网络方面的问题，不过只要稍微配置就能让装ruby程序变得飞快，不用一安装一天。本文做个总结和梳理 先介绍下Ruby相关的各种概念（rvm, gem, bundle, rake, rails等）Ruby这个就不用多说了 RVM用于帮你安装Ruby环境，帮你管理多个Ruby环境，帮你管理你开">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zhaodaxin.com/2017/01/23/2017-01-23-Ruby环境那些坑/"/>
+
+
+
+
+
+  <title>Ruby 环境那些坑 | 3Golds</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">3Golds</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">ThreeGold</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zhaodaxin.com/2017/01/23/2017-01-23-Ruby环境那些坑/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="3Golds">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/gophers.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="3Golds">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ruby 环境那些坑</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-01-23T00:00:00+08:00">
+                2017-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/01/23/2017-01-23-Ruby环境那些坑/" class="leancloud_visitors" data-flag-title="Ruby 环境那些坑">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2,020
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>最近接触了很多ruby程序，除了java之外，让我感觉第二耗时、不是很舒服的语言。但是ruby不让人舒服主要还是网络方面的问题，不过只要稍微配置就能让装ruby程序变得飞快，不用一安装一天。本文做个总结和梳理</strong></p>
+<h3 id="先介绍下Ruby相关的各种概念（rvm-gem-bundle-rake-rails等）"><a href="#先介绍下Ruby相关的各种概念（rvm-gem-bundle-rake-rails等）" class="headerlink" title="先介绍下Ruby相关的各种概念（rvm, gem, bundle, rake, rails等）"></a>先介绍下Ruby相关的各种概念（rvm, gem, bundle, rake, rails等）</h3><h4 id="Ruby"><a href="#Ruby" class="headerlink" title="Ruby"></a>Ruby</h4><p>这个就不用多说了</p>
+<h4 id="RVM"><a href="#RVM" class="headerlink" title="RVM"></a>RVM</h4><p>用于帮你安装Ruby环境，帮你管理多个Ruby环境，帮你管理你开发的每个Ruby应用使用机器上哪个Ruby环境。Ruby环境不仅仅是Ruby本身，还包括依赖的第三方Ruby插件。都由RVM管理。</p>
+<h4 id="Rails"><a href="#Rails" class="headerlink" title="Rails"></a>Rails</h4><p>这个也不用多说，著名开发框架。详细看 <a href="http://zh.wikipedia.org/wiki/Ruby_on_Rails" target="_blank" rel="noopener">http://zh.wikipedia.org/wiki/Ruby_on_Rails</a></p>
+<h4 id="RubyGems"><a href="#RubyGems" class="headerlink" title="RubyGems"></a>RubyGems</h4><p>RubyGems是一个方便而强大的Ruby程序包管理器（ package manager），类似RedHat的RPM.它将一个Ruby应用程序打包到一个gem里，作为一个安装单元。无需安装，最新的Ruby版本已经包含RubyGems了。</p>
+<h4 id="Gem"><a href="#Gem" class="headerlink" title="Gem"></a>Gem</h4><p>Gem是封装起来的Ruby应用程序或代码库。</p>
+<p>注：在终端使用的gem命令，是指通过RubyGems管理Gem包。</p>
+<h4 id="Gemfile"><a href="#Gemfile" class="headerlink" title="Gemfile"></a>Gemfile</h4><p>定义你的应用依赖哪些第三方包，bundle根据该配置去寻找这些包。</p>
+<h4 id="Rake"><a href="#Rake" class="headerlink" title="Rake"></a>Rake</h4><p>Rake是一门构建语言，和make类似。Rake是用Ruby写的，它支持自己的DSL用来处理和维护Ruby程序。 Rails用rake扩展来完成多种不容任务，如数据库初始化、更新等。</p>
+<p>Rake is a build language, similar in purpose to make and ant. Like make and ant it’s a Domain Specific Language, unlike those two it’s an internal DSL programmed in the Ruby language.</p>
+<p>PS：个人感觉有点类似Symfony2中的app/console</p>
+<h4 id="Rakefile"><a href="#Rakefile" class="headerlink" title="Rakefile"></a>Rakefile</h4><p>Rakefile是由Ruby编写，Rake的命令执行就是由Rakefile文件定义。 &gt; In a gem’s context, the Rakefile is extremely useful. It can hold various tasks to help building, testing and debugging your gem, among all other things that you might find useful.</p>
+<p>详细：<a href="http://rake.rubyforge.org/files/doc/rakefile_rdoc.html" target="_blank" rel="noopener">http://rake.rubyforge.org/files/doc/rakefile_rdoc.html</a></p>
+<h4 id="Bundle"><a href="#Bundle" class="headerlink" title="Bundle"></a>Bundle</h4><p>相当于多个RubyGems批处理运行。在配置文件gemfilel里说明你的应用依赖哪些第三方包，他自动帮你下载安装多个包，并且会下载这些包依赖的包。 &gt; Bundler maintains a consistent environment for ruby applications. It tracks an application’s code and the rubygems it needs to run, so that an application will always have the exact gems (and versions) that it needs to run.</p>
+<p><code>参考</code>: </p>
+<ul>
+<li><p><a href="https://henter.me/post/ruby-rvm-gem-rake-bundle-rails.html(内容来自这里)" target="_blank" rel="noopener">https://henter.me/post/ruby-rvm-gem-rake-bundle-rails.html(内容来自这里)</a></p>
+</li>
+<li><p><a href="http://rake.rubyforge.org/" target="_blank" rel="noopener">http://rake.rubyforge.org/</a></p>
+</li>
+<li><p><a href="http://rake.rubyforge.org/files/doc/rakefile_rdoc.html" target="_blank" rel="noopener">http://rake.rubyforge.org/files/doc/rakefile_rdoc.html</a></p>
+</li>
+<li><p><a href="http://yinghuayuan8866.blog.163.com/blog/static/2245702720122909571/" target="_blank" rel="noopener">http://yinghuayuan8866.blog.163.com/blog/static/2245702720122909571/</a></p>
+</li>
+<li><p><a href="http://www.iteye.com/topic/300375" target="_blank" rel="noopener">http://www.iteye.com/topic/300375</a></p>
+</li>
+<li><p><a href="http://martinfowler.com/articles/rake.html" target="_blank" rel="noopener">http://martinfowler.com/articles/rake.html</a></p>
+</li>
+<li><p><a href="http://ruby-china.org/topics/2223" target="_blank" rel="noopener">http://ruby-china.org/topics/2223</a></p>
+</li>
+<li><p><a href="http://www.pcw8510.com/?p=1086" target="_blank" rel="noopener">http://www.pcw8510.com/?p=1086</a></p>
+</li>
+</ul>
+<h3 id="一、Ruby"><a href="#一、Ruby" class="headerlink" title="一、Ruby"></a>一、Ruby</h3><p>在安装ruby的时候，有两个问题</p>
+<ul>
+<li><p><strong>安装方式</strong></p>
+</li>
+<li><p><strong>程序包查找</strong></p>
+</li>
+</ul>
+<p>对于第一个问题，分为包安装和源码方式编译安装，因为可以选择版本，一般yum或者apt-get源提供的版本不能打倒我们的要求的时候，我们会选择这个。还有一种就是通过ruby的虚拟环境管理程序RVM(跟python的pyenv一样)，可以控制每个目录使用不同版本的ruby，并且安装很简单，本文主要介绍rvm安装。</p>
+<h5 id="RVM安装"><a href="#RVM安装" class="headerlink" title="RVM安装"></a><code>RVM</code>安装</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3</span><br><span class="line"></span><br><span class="line">$ \curl -sSL https://get.rvm.io | bash -s stable</span><br><span class="line"></span><br><span class="line">$ source ~/.bashrc</span><br><span class="line"></span><br><span class="line">$ source ~/.bash_profile</span><br></pre></td></tr></table></figure>
+<p>修改 RVM 的 Ruby 安装源到 <a href="https://cache.ruby-china.org/" target="_blank" rel="noopener">Ruby China 的 Ruby</a> 镜像服务器，这样能提高安装速度</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ echo &quot;ruby_url=https://cache.ruby-china.org/pub/ruby&quot; &gt; ~/.rvm/user/db</span><br></pre></td></tr></table></figure>
+<h5 id="Ruby的安装与切换"><a href="#Ruby的安装与切换" class="headerlink" title="Ruby的安装与切换"></a><code>Ruby</code>的安装与切换</h5><p>列出已知的Ruby版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm list know</span><br></pre></td></tr></table></figure>
+<p>安装一个ruby版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">rvm install 2.2.0 --disable-binary</span><br></pre></td></tr></table></figure>
+<p>切换ruby版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm use 2.2.0</span><br></pre></td></tr></table></figure>
+<p>如果想设置为默认版本，这样一来以后新打开的控制台默认的 Ruby 就是这个版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm use 2.2.0 --default</span><br></pre></td></tr></table></figure>
+<p>查看已经安装的Ruby</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm list</span><br></pre></td></tr></table></figure>
+<p>卸载一个已经安装的版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm remove 1.8.7</span><br></pre></td></tr></table></figure>
+<h3 id="二、RubyGems"><a href="#二、RubyGems" class="headerlink" title="二、RubyGems"></a>二、RubyGems</h3><p><strong>第二个坑应该就是gem了，经常通过gem安装程序很慢，或者版本出现问题等等问题，我们接下来先介绍下Gems，然后在展开</strong></p>
+<blockquote>
+<p>Note: RubyGems是Ruby的一个包管理器，提供了分发Ruby程序和函式库的标准格式“gem”，旨在方便地管理gem安装的工具，以及用于分发gem的服务器。这类似于Python的pip。RubyGems大约创建于2003年11月，从Ruby 1.9版起成为Ruby标准库的一部分</p>
+</blockquote>
+<h4 id="为了方便读者和自己查阅，在前面介绍下gem-source"><a href="#为了方便读者和自己查阅，在前面介绍下gem-source" class="headerlink" title="为了方便读者和自己查阅，在前面介绍下gem source"></a>为了方便读者和自己查阅，在前面介绍下gem source</h4><p>如何使用？(主要用于解决安装的时候慢，将sources改为国内的，速度有明显提升)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ gem sources --add https://gems.ruby-china.org/ --remove https://rubygems.org/</span><br><span class="line"></span><br><span class="line">$ gem sources -l</span><br><span class="line"></span><br><span class="line">*** CURRENT SOURCES ***</span><br><span class="line"></span><br><span class="line">https://gems.ruby-china.org</span><br><span class="line"></span><br><span class="line"># 请确保只有 gems.ruby-china.org</span><br><span class="line"></span><br><span class="line">$ gem install rails</span><br><span class="line"></span><br><span class="line">如果你使用 Gemfile 和 Bundle (例如：Rails 项目)</span><br></pre></td></tr></table></figure>
+<h4 id="gemset的使用"><a href="#gemset的使用" class="headerlink" title="gemset的使用"></a>gemset的使用</h4><p><code>RVM</code> 不仅可以提供一个多 <code>Ruby</code> 版本共存的环境，还可以根据项目管理不同的 <code>gemset</code></p>
+<p><code></code></p>
+<p><code>gemset</code> 可以理解为是一个独立的虚拟 <code>Gem</code> 环境，每一个 <code>gemset</code> 都是相互独立的。</p>
+<p><code></code></p>
+<p>比如你有两个项目，一个是 <code>Rails 2.3</code> 一个是 <code>rails3. gemset</code> 可以帮你便捷的建立两套 <code>Gem</code> 开发环境，并且方便的切换。</p>
+<p><code></code></p>
+<p><code>gemset</code> 是附加在 <code>Ruby</code> 语言版本下面的，例如你用了 <code>1.9.2</code>, 建立了一个叫 <code>rails3</code> 的 <code>gemset</code>,当切换到 <code>1.8.7</code> 的时候，<code>rails3</code> 这个 <code>gemset</code>并不存在。</p>
+<h4 id="建立gemset"><a href="#建立gemset" class="headerlink" title="建立gemset"></a>建立gemset</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm use 1.8.7</span><br><span class="line"></span><br><span class="line">rvm gemset create rails23</span><br></pre></td></tr></table></figure>
+<p>然后可以设定已经建立的gemset作为当前环境</p>
+<h4 id="use-可以用来切换语言或者gemset"><a href="#use-可以用来切换语言或者gemset" class="headerlink" title="use 可以用来切换语言或者gemset"></a>use 可以用来切换语言或者gemset</h4><p>前提是它们已经被安装(或者建立)，并可以在<code>list</code>命令中看到</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm use 1.8.7</span><br><span class="line"></span><br><span class="line">rvm use 1.8.7@rails23</span><br></pre></td></tr></table></figure>
+<p>然后所有安装的Gem都是安装在这个gemset之下</p>
+<h4 id="列出当前的Ruby的gemset"><a href="#列出当前的Ruby的gemset" class="headerlink" title="列出当前的Ruby的gemset"></a>列出当前的Ruby的gemset</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm gemset list</span><br></pre></td></tr></table></figure>
+<h4 id="清空gemset中的Gem"><a href="#清空gemset中的Gem" class="headerlink" title="清空gemset中的Gem"></a>清空gemset中的Gem</h4><p>如果你想清空一个 gemset 的所有 Gem, 想重新安装所有 Gem，可以这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm gemset empty 1.8.7@rails23</span><br></pre></td></tr></table></figure>
+<h4 id="删除一个gemset"><a href="#删除一个gemset" class="headerlink" title="删除一个gemset"></a>删除一个gemset</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm gemset delete rails2-3</span><br></pre></td></tr></table></figure>
+<h4 id="项目自动加载gemset"><a href="#项目自动加载gemset" class="headerlink" title="项目自动加载gemset"></a>项目自动加载gemset</h4><p>RVM 还可以自动加载 gemset。 例如我们有一个 Rails 3.1.3 项目，需要 1.9.3 版本 Ruby，整个流程可以这样。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm install 1.9.3</span><br><span class="line"></span><br><span class="line">rvm use 1.9.3</span><br><span class="line"></span><br><span class="line">rvm gemset create rails313</span><br><span class="line"></span><br><span class="line">rvm use 1.9.3@rails313</span><br></pre></td></tr></table></figure>
+<p>下面进入到项目目录，建立一个 .rvmrc 文件。</p>
+<p>在这个文件里可以很简单的加一个命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvm use 1.9.3@rails313</span><br></pre></td></tr></table></figure>
+<p>然后无论你当前 Ruby 设置是什么，cd 到这个项目的时候，RVM 会帮你加载 Ruby 1.9.3 和 rails313 gemset.</p>
+<h4 id="使用-RVM-快速部署-Nginx-Passenger"><a href="#使用-RVM-快速部署-Nginx-Passenger" class="headerlink" title="使用 RVM 快速部署 Nginx + Passenger"></a>使用 RVM 快速部署 <code>Nginx</code> + <code>Passenger</code></h4><p><code>passenger是支持ruby的web服务器</code></p>
+<p>首先安装 Passenger</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">gem install passenger</span><br></pre></td></tr></table></figure>
+<p>然后使用 <code>passenger-install-nginx-module</code> 来安装 Nginx 和部署。</p>
+<p><code></code></p>
+<p>因为这一步需要 root 权限（因为要编译 Nginx）可以用 rvmsudo 这个东西（这个东西真是个好东西）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">rvmsudo passenger-install-nginx-module</span><br></pre></td></tr></table></figure>
+<p>然后会让你选择是下载 Nginx 源码自动编译安装，还是自己选择 Nginx 源码位置。</p>
+<p><code></code></p>
+<p>选择 Nginx 手动安装的可以添加别的编译参数，方便自定义编译 Nginx。</p>
+<p><code></code></p>
+<p>然后一路下载安装。默认的安装位置为 /opt/nginx.</p>
+<p><code></code></p>
+<p>然后看看 nginx.conf，都给你配置好了，只需要加上 root 位置（yourapp/public）就可以了。</p>
+<h4 id="其他选择"><a href="#其他选择" class="headerlink" title="其他选择"></a>其他选择</h4><p>如果你不太喜欢RVM，可以选择<a href="https://github.com/rbenv/rbenv" target="_blank" rel="noopener">rbenv</a> 在rubychaina有一篇文章(rbenv实用指南)[<a href="https://ruby-china.org/wiki/rbenv-guide]" target="_blank" rel="noopener">https://ruby-china.org/wiki/rbenv-guide]</a></p>
+<h3 id="三、bundler"><a href="#三、bundler" class="headerlink" title="三、bundler"></a>三、bundler</h3><p><strong>相当于多个<code>RubyGems</code>批处理运行。在配置文件<code>gemfilel</code>里说明你的应用依赖哪些第三方包，他自动帮你下载安装多个包，并且会下载这些包依赖的包</strong></p>
+<p>如何使用？</p>
+<p>你可以用 Bundler 的 <a href="http://bundler.io/v1.5/bundle_config.html#gem-source-mirrors" target="_blank" rel="noopener">Gem 源代码镜像命令</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ bundle config mirror.https://rubygems.org https://gems.ruby-china.org</span><br></pre></td></tr></table></figure>
+<p>这样你不用改你的 Gemfile 的 source</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">source &apos;https://rubygems.org/&apos;</span><br><span class="line"></span><br><span class="line">gem &apos;rails&apos;, &apos;4.1.0&apos;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="3Golds 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="3Golds 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ruby/" rel="tag"># ruby</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/21/2017-01-22-Useradd-sh/" rel="next" title="添加一个用户sudo权限的使用密钥登录的用户">
+                <i class="fa fa-chevron-left"></i> 添加一个用户sudo权限的使用密钥登录的用户
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/04/2017-01-23-Gitlab-Omnibus/" rel="prev" title="Gitlab-Omnibus">
+                Gitlab-Omnibus <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="uyan_frame"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/gophers.jpg"
+                alt="3Golds" />
+            
+              <p class="site-author-name" itemprop="name">3Golds</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/3Golds" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:go80800@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#先介绍下Ruby相关的各种概念（rvm-gem-bundle-rake-rails等）"><span class="nav-number">1.</span> <span class="nav-text">先介绍下Ruby相关的各种概念（rvm, gem, bundle, rake, rails等）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ruby"><span class="nav-number">1.1.</span> <span class="nav-text">Ruby</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RVM"><span class="nav-number">1.2.</span> <span class="nav-text">RVM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rails"><span class="nav-number">1.3.</span> <span class="nav-text">Rails</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RubyGems"><span class="nav-number">1.4.</span> <span class="nav-text">RubyGems</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gem"><span class="nav-number">1.5.</span> <span class="nav-text">Gem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gemfile"><span class="nav-number">1.6.</span> <span class="nav-text">Gemfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rake"><span class="nav-number">1.7.</span> <span class="nav-text">Rake</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rakefile"><span class="nav-number">1.8.</span> <span class="nav-text">Rakefile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bundle"><span class="nav-number">1.9.</span> <span class="nav-text">Bundle</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、Ruby"><span class="nav-number">2.</span> <span class="nav-text">一、Ruby</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RVM安装"><span class="nav-number">2.0.1.</span> <span class="nav-text">RVM安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Ruby的安装与切换"><span class="nav-number">2.0.2.</span> <span class="nav-text">Ruby的安装与切换</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、RubyGems"><span class="nav-number">3.</span> <span class="nav-text">二、RubyGems</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为了方便读者和自己查阅，在前面介绍下gem-source"><span class="nav-number">3.1.</span> <span class="nav-text">为了方便读者和自己查阅，在前面介绍下gem source</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#gemset的使用"><span class="nav-number">3.2.</span> <span class="nav-text">gemset的使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#建立gemset"><span class="nav-number">3.3.</span> <span class="nav-text">建立gemset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#use-可以用来切换语言或者gemset"><span class="nav-number">3.4.</span> <span class="nav-text">use 可以用来切换语言或者gemset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#列出当前的Ruby的gemset"><span class="nav-number">3.5.</span> <span class="nav-text">列出当前的Ruby的gemset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#清空gemset中的Gem"><span class="nav-number">3.6.</span> <span class="nav-text">清空gemset中的Gem</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除一个gemset"><span class="nav-number">3.7.</span> <span class="nav-text">删除一个gemset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#项目自动加载gemset"><span class="nav-number">3.8.</span> <span class="nav-text">项目自动加载gemset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-RVM-快速部署-Nginx-Passenger"><span class="nav-number">3.9.</span> <span class="nav-text">使用 RVM 快速部署 Nginx + Passenger</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#其他选择"><span class="nav-number">3.10.</span> <span class="nav-text">其他选择</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、bundler"><span class="nav-number">4.</span> <span class="nav-text">三、bundler</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">3Golds</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three-waves.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2159314"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bK3mQMcoKlwuLljKCOH5tsP1-gzGzoHsz", "343DJUSwdwM3miekBuwdNf24");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?0c58a1486de42ac6cc1c59c7d98ae887"></script><script>L2Dwidget.init({});</script></body>
+</html>
